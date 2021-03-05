@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:layout_marginTop="100dp"
+    android:layout_marginBottom="100dp"
+    android:background="#FBFAFA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8.5"
+        android:orientation="vertical"
+        android:layout_margin="16dp"
+        android:background="@drawable/box_board">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2.5"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="로고"
+                android:textSize="46sp"
+                android:gravity="center|bottom"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:paddingStart="48dp"
+            android:paddingEnd="48dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="전화번호, 사용자 이름 또는 이메일"
+                android:background="@drawable/box_edit"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="14sp"
+                android:id="@+id/login_id"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="비밀번호"
+                android:inputType="textPassword"
+                android:background="@drawable/box_edit"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:layout_marginBottom="18dp"
+                android:textSize="14sp"
+                android:id="@+id/login_pw"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="로그인"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="#96DEFF"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/btnLogin"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#D8D8D8"
+                    android:layout_toLeftOf="@+id/tvOr"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="또는"
+                    android:textSize="14sp"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/tvOr"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#D8D8D8"
+                    android:layout_toRightOf="@+id/tvOr"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"/>
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Google로 로그인"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="18dp"
+                android:textColor="#000000"
+                android:id="@+id/loginGoogle"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호를 잊으셨나요?"
+                android:textColor="#000000"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:background="@drawable/box_board">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="계정이 없으신가요?"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:layout_marginRight="16dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="가입하기"
+            android:textColor="#123FC6"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:id="@+id/moveToRegister"/>
+    </LinearLayout>
+
+</LinearLayout>

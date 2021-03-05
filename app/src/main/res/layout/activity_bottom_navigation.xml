@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:id="@+id/tblNavigationBar"
+            android:layout_alignParentBottom="true">
+            <TableRow>
+                <Button
+                    android:text="PAGE 1"
+                    android:id="@+id/btnPage1"/>
+                <Button
+                    android:text="PAGE 2"
+                    android:id="@+id/btnPage2"/>
+                <Button
+                    android:text="PAGE 3"
+                    android:id="@+id/btnPage3"/>
+                <Button
+                    android:text="PAGE 4"
+                    android:id="@+id/btnPage4"/>
+            </TableRow>
+        </TableLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/tblNavigationBar"
+            android:id="@+id/relFragmentBox">
+
+        </RelativeLayout>
+
+    </RelativeLayout>

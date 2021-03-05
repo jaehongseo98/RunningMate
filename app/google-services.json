@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "346895175316",
+    "firebase_url": "https://fir-register-login-ecd4f-default-rtdb.firebaseio.com",
+    "project_id": "fir-register-login-ecd4f",
+    "storage_bucket": "fir-register-login-ecd4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346895175316:android:23c190c155737143ce2e81",
+        "android_client_info": {
+          "package_name": "com.example.firebase_register_login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346895175316-t7q0kb0tqp13tqlohjkdnesgaq13kkjp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsdNQ53Elskky-XsyJnDDYQfJkZsVZiew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346895175316-t7q0kb0tqp13tqlohjkdnesgaq13kkjp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346895175316:android:1cd19a510ccaa37dce2e81",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346895175316-t7q0kb0tqp13tqlohjkdnesgaq13kkjp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsdNQ53Elskky-XsyJnDDYQfJkZsVZiew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346895175316-t7q0kb0tqp13tqlohjkdnesgaq13kkjp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346895175316:android:7302ba8dca3d4ef1ce2e81",
+        "android_client_info": {
+          "package_name": "com.example.runningapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346895175316-t7q0kb0tqp13tqlohjkdnesgaq13kkjp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsdNQ53Elskky-XsyJnDDYQfJkZsVZiew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346895175316-t7q0kb0tqp13tqlohjkdnesgaq13kkjp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

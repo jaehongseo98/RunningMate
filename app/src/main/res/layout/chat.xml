@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:padding="10dp"
+        android:id="@+id/ivChatIcon"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvChatName"
+        android:layout_toRightOf="@+id/ivChatIcon"
+        android:textSize="23sp"
+        android:layout_marginTop="10dp"
+        android:textColor="#000000"
+        android:fontFamily="@font/nanumgothic"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvChatMessage"
+        android:layout_toRightOf="@+id/ivChatIcon"
+        android:layout_below="@+id/tvChatName"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/nanumgothic"
+        android:textStyle="bold"/>
+
+</RelativeLayout>
