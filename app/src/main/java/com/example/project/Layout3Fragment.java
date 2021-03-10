@@ -1,9 +1,11 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -50,6 +52,14 @@ public class Layout3Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 lvBoard.setAdapter(chatAdapter);
+            }
+        });
+
+        lvBoard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(),ChatActivity.class);
+                startActivity(intent);
             }
         });
 

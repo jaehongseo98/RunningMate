@@ -62,8 +62,8 @@ public class MainActivity extends Activity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(MainActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            Toast.makeText(MainActivity.this, user.getUid()+"님 반갑습니다", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this, BottomNavigation.class);
                             startActivity(intent);
                         } else {
