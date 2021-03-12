@@ -34,7 +34,7 @@ public class ChatDataAdapter extends RecyclerView.Adapter<ChatDataAdapter.MyView
 
         holder.tv_nickname.setText(chat.getNickname());
         holder.tv_message.setText(chat.getMsg());
-        
+
         if (chat.getNickname().equals(this.myNickname)){
             holder.tv_message.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
             holder.tv_nickname.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
