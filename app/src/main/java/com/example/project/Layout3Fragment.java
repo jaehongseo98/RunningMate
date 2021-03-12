@@ -13,7 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 // bottomNavigation 에서 매칭된 세번째 fragment
-public class Layout3Fragment extends Fragment {
+public class
+
+
+Layout3Fragment extends Fragment {
 
     ListView lvBoard;
     ProfileAdapter profileAdapter;
