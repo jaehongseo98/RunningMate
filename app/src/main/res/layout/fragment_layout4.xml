@@ -1,13 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CalenderActivity"
+    android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ImageView
+        android:id="@+id/logo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="50dp"
+        tools:srcCompat="@tools:sample/avatars" />
 
-        <TextView
+    <TextView
+        android:id="@+id/user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="000님 안녕하세요"
+        android:layout_margin="15dp"
+        android:textSize="30sp" />
+
+    <CalendarView
+        android:id="@+id/calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/updateuser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="네번째 화면 입니다"
-            android:textSize="23sp"/>
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="#96DEFF"
+            android:text="회원 정보 수정"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:layout_weight="1"/>
 
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="#B3B2B2"
+            android:textColor="#FFFFFF"
+            android:text="로그아웃"
+            android:textSize="20dp"
+            android:layout_weight="1"/>
     </LinearLayout>
+
+</LinearLayout>
