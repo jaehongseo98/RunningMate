@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
+    FirebaseDatabase firebaseDatabase;
 
     private EditText edt_chat;
     private Button btn_send;
@@ -45,9 +47,9 @@ public class ChatActivity extends AppCompatActivity {
         btn_send = findViewById(R.id.btn_send);
         edt_chat = findViewById(R.id.edt_chat);
 
-
         user = firebaseAuth.getInstance().getCurrentUser();
         nick = user.getUid();
+        Log.i("nick",nick);
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,12 +71,12 @@ public class ChatActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         chatList = new ArrayList<>();
-        mAdapter = new ChatDataAdapter(chatList, ChatActivity.this,nick);
+        mAdapter = new ChatDataAdapter(chatList, ChatActivity.this, nick);
 
         mRecyclerView.setAdapter(mAdapter);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();// 선언과 생성
-        myRef = database.getReference("Message");// 해당 db를 참조
+        firebaseDatabase = FirebaseDatabase.getInstance();// 선언과 생성
+        myRef = firebaseDatabase.getReference("Message");// 해당 db를 참조
 
 
         myRef.addChildEventListener(new ChildEventListener() {
