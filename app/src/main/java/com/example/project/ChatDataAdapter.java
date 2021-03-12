@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,6 @@ public class ChatDataAdapter extends RecyclerView.Adapter<ChatDataAdapter.MyView
 
     private List<ChatData> mDataset;
     private String myNickname;
-
     // 새로운 유형 표시
     @NonNull
     @Override
@@ -70,6 +70,7 @@ public class ChatDataAdapter extends RecyclerView.Adapter<ChatDataAdapter.MyView
     public ChatDataAdapter(List<ChatData> myDataset, Context context, String myNickname){
         mDataset = myDataset;
         this.myNickname = myNickname;
+        Log.i("myNickname", myNickname);
     }
 
     public void addChat(ChatData chat){
