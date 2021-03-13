@@ -32,6 +32,11 @@ public class ChatDataAdapter extends RecyclerView.Adapter<ChatDataAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ChatData chat = mDataset.get(position);
 
+//        if (chat.getNickname()== null){
+//            holder.tv_nickname.setText("알수없음");
+//        } else{
+//            holder.tv_nickname.setText(chat.getNickname());
+//        }
         holder.tv_nickname.setText(chat.getNickname());
         holder.tv_message.setText(chat.getMsg());
 

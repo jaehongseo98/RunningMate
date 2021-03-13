@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity{
 //    SignInButton btn_google;
 //    private GoogleApiClient googleApiClient; // 구글 API 클라이언트 객체
 //    private static final int REQ_SIGN_GOOGLE = 100; // 구글 로그인 결과 코드
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity{
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            Toast.makeText(MainActivity.this, user.getUid() + " 님 반갑습니다", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, user.getDisplayName() + " 님 반갑습니다", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this, BottomNavigation.class);
                             startActivity(intent);
                         } else {

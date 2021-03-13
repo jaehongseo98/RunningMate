@@ -6,6 +6,8 @@ public class Chat {
     String name;
     String message;
 
+    public Chat(){}
+
     public Chat(int icon, String name, String message) {
         this.icon = icon;
         this.name = name;

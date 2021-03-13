@@ -3,6 +3,7 @@ package com.example.project;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -89,8 +91,22 @@ public class RegisterActivity extends AppCompatActivity {
                                 FirebaseUser user = firebaseAuth.getCurrentUser();
                                 String email = user.getEmail();
                                 String uid = user.getUid();
-
                                 String name = edtInputName.getText().toString().trim();
+
+                                // 프로필 수정하기(displayName을 사용하기 위해)
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name).build();
+                                user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            Log.i("tag","user profile update");
+                                            String displayName = user.getDisplayName();
+                                        }
+                                    }
+                                });
+                                String displayName = user.getDisplayName();
+                                //Log.i("displayname",displayName);
 
                                 //해쉬맵 테이블을 파이어베이스 데이터베이스에 저장
                                 HashMap<Object,String> hashMap = new HashMap<>();
@@ -98,6 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 hashMap.put("uid",uid);
                                 hashMap.put("email",email);
                                 hashMap.put("name",name);
+                                hashMap.put("displayName",displayName);
 
                                 // db접근 권한
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();

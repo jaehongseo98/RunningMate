@@ -9,6 +9,8 @@ public class Profile {
         this.name = name;
     }
 
+    public Profile(){}
+
     public int getIcon() {
         return icon;
     }

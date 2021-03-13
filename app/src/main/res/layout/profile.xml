@@ -26,7 +26,8 @@
         android:layout_toLeftOf="@+id/btnBlock"
         android:layout_marginLeft="100dp"
         android:text="삭제"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp"
+        android:id="@+id/btnDelete"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
