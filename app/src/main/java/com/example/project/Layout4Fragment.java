@@ -12,8 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.firebase.auth.FirebaseAuth;
+
 // bottomNavigation 에서 매칭된 네번째 fragment
 public class Layout4Fragment extends Fragment {
+    FirebaseAuth auth;
 
     TextView user;
     Button updateuser, logout;
@@ -29,7 +33,7 @@ public class Layout4Fragment extends Fragment {
         updateuser = (Button)root.findViewById(R.id.updateuser);
         logout = (Button)root.findViewById(R.id.logout);
         calendar = (CalendarView)root.findViewById(R.id.calendar);
-
+        auth = FirebaseAuth.getInstance();
 
         updateuser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,5 +52,9 @@ public class Layout4Fragment extends Fragment {
         });
 
         return root;
+    }
+
+    public void logout(View view){
+        auth.signOut();
     }
 }
