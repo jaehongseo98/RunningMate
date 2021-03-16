@@ -9,11 +9,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +37,7 @@ import java.util.HashMap;
 public class
 
 
-Layout3Fragment extends Fragment {
+Layout3Fragment extends Fragment{
 
     ListView lvBoard;
     ProfileAdapter profileAdapter;
@@ -60,10 +64,17 @@ Layout3Fragment extends Fragment {
         firebaseUser = firebaseAuth.getInstance().getCurrentUser();
         Log.i("userdisplayname" ,firebaseUser.getDisplayName());
 
-        // 2.데이터 정렬 및 필터링(User에 있는 name값 가져오기)
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
-
+        /////////////////
+//        int bundle = getArguments().getInt("index");
+//        if (getArguments() != null){
+//            Toast.makeText(root.getContext(), String.valueOf(bundle), Toast.LENGTH_SHORT).show();
+//            Log.i("bundel", String.valueOf(bundle));
+//        } else {
+//            Log.i("bundel error", String.valueOf(bundle));
+//        }
+        /////////////////
         // 2-1 친구 목록
         Query allFQuery = databaseReference.child("Users").orderByChild("uid");
 
@@ -74,28 +85,16 @@ Layout3Fragment extends Fragment {
                     String key = snapshot1.getKey();
                     //Log.i("key", key);
                     Profile get = snapshot1.getValue(Profile.class);
-
                     String name = get.name;
                     profileAdapter.addItem(R.drawable.ic_baseline_account_circle_24,name);
+                    profileAdapter.notifyDataSetChanged();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w("TAG", "loadPost:onCancelled", error.toException());
             }
         });
-
-//        // 2-3 삭제 버튼
-//        btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String key = databaseReference.child("Users").getKey();
-//                Log.i("get key",key);
-//                HashMap<String, Object> map = new HashMap<>();
-//                map.put()
-//            }
-//        });
 
         // 2-2 채팅 목록
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -112,7 +111,6 @@ Layout3Fragment extends Fragment {
                     String name = get.getNickname();
                     String msg = get.getMsg();
                     chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, name, msg);
-
                 }
             }
 
@@ -123,9 +121,6 @@ Layout3Fragment extends Fragment {
         });
 
         chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, "test", "sample view");
-
-
-
 
         lvBoard.setAdapter(profileAdapter);
 
@@ -153,4 +148,5 @@ Layout3Fragment extends Fragment {
 
         return root;
     }
+
 }
