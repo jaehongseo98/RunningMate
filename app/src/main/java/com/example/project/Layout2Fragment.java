@@ -19,10 +19,11 @@ public class Layout2Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_layout2,container,false);
 
-        MapView mapView = new MapView(getActivity());
+        MapView mapViewAPI = new MapView(getActivity());
         //this, getAcitity로 사용
         ViewGroup mapViewContainer = (ViewGroup)root.findViewById(R.id.map_view);
-        mapViewContainer.addView(mapView);
+        mapViewContainer.addView(mapViewAPI);
+
 
         return root;
     }
