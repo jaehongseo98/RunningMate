@@ -37,7 +37,9 @@ dependencies {
     // firebase
     implementation 'com.google.firebase:firebase-database:19.6.0'
     implementation 'com.google.firebase:firebase-auth:20.0.2'
-
+    //Map API
+    implementation files('libs/libDaumMapAndroid.jar')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //implementation 'com.google.android.gms:play-services-auth:19.0.0'// 구글 로그인
     //implementation 'com.github.bumptech.glide:glide:4.9.0'// 이미지 로딩
     //annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'// 이미지 로딩2
@@ -45,6 +47,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     // For control over item selection of both touch and mouse driven selection
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
+    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
     //implementation platform('com.google.firebase:firebase-bom:26.2.0')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
