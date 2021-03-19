@@ -35,7 +35,6 @@ public class ProfileAdapter extends BaseAdapter {
     ArrayList<Profile> dataset = new ArrayList<>();
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-    FirebaseAuth firebaseAuth;
 
     // dataset 에 있는 항목 수
     @Override
@@ -106,6 +105,7 @@ public class ProfileAdapter extends BaseAdapter {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         Toast.makeText(v.getContext(), "delete success", Toast.LENGTH_SHORT).show();
+                                        //deleteItem(position);
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override

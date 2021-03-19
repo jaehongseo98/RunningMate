@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,7 +44,7 @@ Layout3Fragment extends Fragment{
     ListView lvBoard;
     ProfileAdapter profileAdapter;
     ChatAdapter chatAdapter;
-    Button btnAllF, btnChat, btnDelete, btnBlock;
+    Button btnAllF, btnChat, btnDelete, btnBlock, btnPlusChat;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
@@ -57,8 +59,13 @@ Layout3Fragment extends Fragment{
         btnChat = (Button)root.findViewById(R.id.btnChat);
         btnDelete = root.findViewById(R.id.btnDelete);
         btnBlock = root.findViewById(R.id.btnBlock);
+        btnPlusChat = root.findViewById(R.id.btnPlusChat);
         profileAdapter = new ProfileAdapter();
         chatAdapter = new ChatAdapter();
+
+        btnPlusChat.setVisibility(View.GONE);
+
+        //btnPlusChat.setVisibility(View.GONE);
 
         // 1.현재 로그인한 사용자를 가져옴
         firebaseUser = firebaseAuth.getInstance().getCurrentUser();
@@ -96,21 +103,32 @@ Layout3Fragment extends Fragment{
             }
         });
 
+        btnPlusChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, "test", "sample view");
+            }
+        });
+
         // 2-2 채팅 목록
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
 
-        Query chatQuery = databaseReference.child("Message").orderByChild("nickname");
+        Query chatQuery = databaseReference.child("Chat").orderByChild("nickname");
 
         chatQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot snapshot2 : snapshot.getChildren()){
+//                    if(snapshot.getChildrenCount() == 0){
+//                        btnPlusChat.setVisibility(View.VISIBLE);
+//                    }
                     String key = snapshot2.getKey();
                     ChatData get = snapshot2.getValue(ChatData.class);
                     String name = get.getNickname();
                     String msg = get.getMsg();
-                    chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, name, msg);
+                    chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, key, name);
+                    chatAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -120,7 +138,7 @@ Layout3Fragment extends Fragment{
             }
         });
 
-        chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, "test", "sample view");
+        //chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, "test", "sample view");
 
         lvBoard.setAdapter(profileAdapter);
 
@@ -128,6 +146,7 @@ Layout3Fragment extends Fragment{
             @Override
             public void onClick(View view) {
                 lvBoard.setAdapter(profileAdapter);
+                btnPlusChat.setVisibility(View.GONE);
             }
         });
 
@@ -135,13 +154,18 @@ Layout3Fragment extends Fragment{
             @Override
             public void onClick(View view) {
                 lvBoard.setAdapter(chatAdapter);
+                btnPlusChat.setVisibility(View.VISIBLE);
             }
         });
 
         lvBoard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), position +"번째 클릭함", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(),ChatActivity.class);
+//                intent.putExtra("list name",list.get(position).name);
+//                intent.putExtra("list message", list.get(position).message);
+                intent.putExtra("index",position);
                 startActivity(intent);
             }
         });

@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,31 +53,8 @@ public class ChatActivity extends AppCompatActivity {
 
         user = firebaseAuth.getInstance().getCurrentUser();
 
-//        firebaseDatabase = FirebaseDatabase.getInstance();
-//        myRef = firebaseDatabase.getReference();
-//        Query chatQuery = myRef.child("Message").orderByChild("nickname");
-//        chatQuery.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for(DataSnapshot snapshot2 : snapshot.getChildren()){
-//                    String key = snapshot2.getKey();
-//                    ChatData get = snapshot2.getValue(ChatData.class);
-//                    if(get.getNickname().equals(user.getUid())){// Message의 nickname과 현재 사용자의 uid가 같다면
-//                        nick = user.getDisplayName();
-//                    }
-//                    else {
-//                        nick = user.getUid();
-//                    }
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.w("TAG", "loadPost:onCancelled", error.toException());
-//            }
-//        });
-
         nick = user.getDisplayName();
-        Log.i("nick",nick);
+        //Log.i("nick",nick);
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,8 +81,12 @@ public class ChatActivity extends AppCompatActivity {
 
         mRecyclerView.setAdapter(mAdapter);
 
+        Intent intent = getIntent();
+        int index = intent.getIntExtra("index",0);
+        Log.i("index값 넘어옴", String.valueOf(index));
+
         firebaseDatabase = FirebaseDatabase.getInstance();// 선언과 생성
-        myRef = firebaseDatabase.getReference("Message");// 해당 db를 참조
+        myRef = firebaseDatabase.getReference("Chat").child("Room"+index);// 해당 db를 참조
 
 
         myRef.addChildEventListener(new ChildEventListener() {
@@ -137,8 +119,5 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        // 1. recyclerView - 반복
-        // 2. db 내용을 넣음
-        // 3. 상대방 채팅 내용이 보임
     }
 }

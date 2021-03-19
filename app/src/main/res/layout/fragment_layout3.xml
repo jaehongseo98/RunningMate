@@ -49,13 +49,20 @@
             android:scaleType="fitCenter"/>
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="40dp"
             android:textSize="12dp"
             android:hint=" 검색"
             android:background="#ffffffff"
             android:paddingBottom="10dp"
             android:focusable="false"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/btnPlusChat"
+            android:layout_marginLeft="85dp"
+            android:text="채팅방 만들기"
+            android:textSize="14dp"/>
 
     </LinearLayout>
 
