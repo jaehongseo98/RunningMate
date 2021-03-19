@@ -36,8 +36,8 @@
 
             >
 
-            <TextView
-                android:id="@+id/textView17"
+            <EditText
+                android:id="@+id/edteat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="식단 \n\n\n" />
@@ -66,7 +66,7 @@
             android:background="@drawable/border">
 
             <EditText
-                android:id="@+id/textView19"
+                android:id="@+id/edthealth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -90,6 +90,12 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="오늘의 사진(등록)" />
+
+        <Button
+            android:id="@+id/btn_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사진 입력"/>
     </LinearLayout>
 
     <Button
