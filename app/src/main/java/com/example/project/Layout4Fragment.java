@@ -14,11 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 // bottomNavigation 에서 매칭된 네번째 fragment
 public class Layout4Fragment extends Fragment {
     FirebaseAuth auth;
-
+    FirebaseUser user1;
     TextView user;
     Button updateuser, logout;
     CalendarView calendar;
@@ -28,12 +29,15 @@ public class Layout4Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_layout4,container,false);
 
-
         user =(TextView)root.findViewById(R.id.user);
         updateuser = (Button)root.findViewById(R.id.updateuser);
         logout = (Button)root.findViewById(R.id.logout);
         calendar = (CalendarView)root.findViewById(R.id.calendar);
         auth = FirebaseAuth.getInstance();
+        user1 = auth.getCurrentUser();
+
+        String username = user1.getDisplayName();
+        user.setText(username+"님 환영합니다");
 
         updateuser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +51,9 @@ public class Layout4Fragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Intent intent = new Intent(getActivity(), CalenderSaveActivity.class);
+                intent.putExtra("year",year);
+                intent.putExtra("month",month+1);
+                intent.putExtra("day",dayOfMonth);
                 startActivity(intent);
             }
         });
