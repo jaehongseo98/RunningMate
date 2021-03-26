@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.project">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
-        <activity android:name=".DBPWUPActivity"></activity>
+        <activity android:name=".DBPWUPActivity" />
         <activity android:name=".UserUpdateActivity" />
         <activity android:name=".CalenderSaveActivity" />
         <activity android:name=".PWinsertActivity" />
@@ -32,7 +32,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.kakao.sdk.AppKey" android:value="236677f0c864ff5b307d5e18f8bc6389"/>
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="236677f0c864ff5b307d5e18f8bc6389" />
     </application>
 
 </manifest>

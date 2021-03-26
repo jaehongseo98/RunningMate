@@ -50,6 +50,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
     //implementation platform('com.google.firebase:firebase-bom:26.2.0')
+    implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

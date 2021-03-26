@@ -1,6 +1,8 @@
 package com.example.project;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -28,9 +32,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +56,8 @@ Layout3Fragment extends Fragment{
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+    FirebaseStorage firebaseStorage;
+    StorageReference storageReference;
 
     @Nullable
     @Override
@@ -73,6 +82,13 @@ Layout3Fragment extends Fragment{
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
+        // storage에서 이미지 가져오기
+        firebaseStorage  = firebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference().child("images/"+firebaseUser.getDisplayName());
+
+        ImageView imageView = root.findViewById(R.id.imageView);
+        Glide.with(getContext()).
+
         /////////////////
 //        int bundle = getArguments().getInt("index");
 //        if (getArguments() != null){
@@ -172,5 +188,6 @@ Layout3Fragment extends Fragment{
 
         return root;
     }
+
 
 }

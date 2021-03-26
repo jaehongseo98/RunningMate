@@ -1,0 +1,158 @@
+<html>
+<head>
+<title>ProfileAdapter.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ProfileAdapter.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.project</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.BaseAdapter</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.RelativeLayout</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.FragmentManager</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnCompleteListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnFailureListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Task</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s2">// 3번째 fragment에 붙일 adpater(프로필과 이름)</span>
+<span class="s0">public class </span><span class="s1">ProfileAdapter </span><span class="s0">extends </span><span class="s1">BaseAdapter {</span>
+
+    <span class="s1">ArrayList&lt;Profile&gt; dataset = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+    <span class="s1">FirebaseDatabase firebaseDatabase</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference databaseReference</span><span class="s0">;</span>
+
+    <span class="s2">// dataset 에 있는 항목 수</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public int </span><span class="s1">getCount() {</span>
+        <span class="s0">return </span><span class="s1">dataset.size()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s2">// position 을 이용하여 dataset 에 있는 항목을 가져옴</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">Object getItem(</span><span class="s0">int </span><span class="s1">position) {</span>
+        <span class="s0">return </span><span class="s1">dataset.get(position)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s2">// position 을 이용하여 관련 행 id를 가져옴</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public long </span><span class="s1">getItemId(</span><span class="s0">int </span><span class="s1">position) {</span>
+        <span class="s0">return </span><span class="s1">position</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s2">// dataset 의 지정된 위치에 데이터 표시</span>
+    <span class="s2">// - position : 위치</span>
+    <span class="s2">// - convertView : 각 항목들</span>
+    <span class="s2">// - parent : convertView 가 담길 ListView</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View getView(</span><span class="s0">int </span><span class="s1">position</span><span class="s0">, </span><span class="s1">View convertView</span><span class="s0">, </span><span class="s1">ViewGroup parent) {</span>
+
+        <span class="s1">Context root = parent.getContext()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(convertView == </span><span class="s0">null</span><span class="s1">){</span>
+            <span class="s1">LayoutInflater inflater = (LayoutInflater) root.getSystemService(Context.LAYOUT_INFLATER_SERVICE)</span><span class="s0">;</span>
+            <span class="s1">convertView = inflater.inflate(R.layout.profile</span><span class="s0">,</span><span class="s1">parent</span><span class="s0">,false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">Profile profile = dataset.get(position)</span><span class="s0">;</span>
+
+        <span class="s2">// 화면에 보여질 위젯에 대한 참조 획득</span>
+        <span class="s1">ImageView ivIcon = convertView.findViewById(R.id.ivIcon)</span><span class="s0">;</span>
+        <span class="s1">TextView tvName = convertView.findViewById(R.id.tvName)</span><span class="s0">;</span>
+
+        <span class="s2">// 위젯에 데이터 반영</span>
+        <span class="s1">ivIcon.setImageResource(profile.getIcon())</span><span class="s0">;</span>
+        <span class="s1">tvName.setText(profile.getName())</span><span class="s0">;</span>
+
+        <span class="s1">firebaseDatabase = FirebaseDatabase.getInstance()</span><span class="s0">;</span>
+        <span class="s1">databaseReference = firebaseDatabase.getReference()</span><span class="s0">;</span>
+
+        <span class="s2">// 해당 리스트뷰 클릭 이벤트</span>
+        <span class="s1">RelativeLayout relativeCmdArea = convertView.findViewById(R.id.relativeCmdArea)</span><span class="s0">;</span>
+        <span class="s1">relativeCmdArea.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Toast.makeText(v.getContext()</span><span class="s0">, </span><span class="s1">position+</span><span class="s3">&quot;번째를 클릭함&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+<span class="s2">//                Intent intent = new Intent(v.getContext(),Layout3Fragment.class);</span>
+<span class="s2">//                intent.putExtra(&quot;index&quot;,dataset.get(position).getName());</span>
+<span class="s2">//                v.getContext().startActivity(intent);</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        
+        <span class="s2">// 친구 삭제 이벤트</span>
+        <span class="s1">String name = dataset.get(position).getName()</span><span class="s0">;</span><span class="s2">// 현재 위치의 이름값을 가져옴</span>
+        <span class="s1">Button btnDelete = convertView.findViewById(R.id.btnDelete)</span><span class="s0">;</span>
+        <span class="s1">btnDelete.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">databaseReference.child(</span><span class="s3">&quot;Users&quot;</span><span class="s1">).addValueEventListener(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span><span class="s2">//Users 밑에 있는 자식들의 이벤트 메서드</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                        <span class="s0">for</span><span class="s1">(DataSnapshot snapshot1 : snapshot.getChildren()) {</span><span class="s2">// Users 밑의 자식들을 snapshot1이 돌면서</span>
+                            <span class="s1">Profile profile1 = snapshot1.getValue(Profile.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s0">if</span><span class="s1">(profile1.getName().equals(name)){</span><span class="s2">// Users 밑의 자식들중 value 값중 현재 위치의 이름값과 같다면</span>
+                                <span class="s1">String key = snapshot1.getKey()</span><span class="s0">;</span><span class="s2">// 해당하는 key값을 가져와</span>
+                                <span class="s1">databaseReference.child(</span><span class="s3">&quot;Users&quot;</span><span class="s1">).child(key).removeValue().addOnCompleteListener(</span><span class="s0">new </span><span class="s1">OnCompleteListener&lt;Void&gt;() {</span><span class="s2">// 삭제이벤트 실행</span>
+                                    <span class="s1">@Override</span>
+                                    <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;Void&gt; task) {</span>
+                                        <span class="s1">Toast.makeText(v.getContext()</span><span class="s0">, </span><span class="s3">&quot;delete success&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                        <span class="s1">notifyDataSetChanged()</span><span class="s0">;</span>
+                                    <span class="s1">}</span>
+                                <span class="s1">}).addOnFailureListener(</span><span class="s0">new </span><span class="s1">OnFailureListener() {</span>
+                                    <span class="s1">@Override</span>
+                                    <span class="s0">public void </span><span class="s1">onFailure(@NonNull Exception e) {</span>
+                                        <span class="s1">Toast.makeText(v.getContext()</span><span class="s0">, </span><span class="s3">&quot;delete fail&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                    <span class="s1">}</span>
+                                <span class="s1">})</span><span class="s0">;</span>
+                            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                                <span class="s1">Log.i(</span><span class="s3">&quot;snapshot error&quot;</span><span class="s0">,</span><span class="s3">&quot;snapshot error&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">}</span>
+                    <span class="s1">}</span>
+
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+                        <span class="s1">Log.w(</span><span class="s3">&quot;TAG&quot;</span><span class="s0">, </span><span class="s3">&quot;loadPost:onCancelled&quot;</span><span class="s0">, </span><span class="s1">error.toException())</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">})</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">convertView</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">addItem(</span><span class="s0">int </span><span class="s1">icon</span><span class="s0">, </span><span class="s1">String name){</span>
+        <span class="s1">Profile profile = </span><span class="s0">new </span><span class="s1">Profile(icon</span><span class="s0">,</span><span class="s1">name)</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.notifyDataSetChanged()</span><span class="s0">;</span>
+        <span class="s1">dataset.add(profile)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

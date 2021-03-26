@@ -1,0 +1,196 @@
+<html>
+<head>
+<title>Layout3Fragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Layout3Fragment.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.project</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.AdapterView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ListView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.FragmentManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.FragmentTransaction</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnCompleteListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnFailureListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Task</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseUser</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.Query</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">org.json.JSONObject</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.lang.reflect.Array</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span>
+
+<span class="s2">// bottomNavigation 에서 매칭된 세번째 fragment</span>
+<span class="s0">public class</span>
+
+
+<span class="s1">Layout3Fragment </span><span class="s0">extends </span><span class="s1">Fragment{</span>
+
+    <span class="s1">ListView lvBoard</span><span class="s0">;</span>
+    <span class="s1">ProfileAdapter profileAdapter</span><span class="s0">;</span>
+    <span class="s1">ChatAdapter chatAdapter</span><span class="s0">;</span>
+    <span class="s1">Button btnAllF</span><span class="s0">, </span><span class="s1">btnChat</span><span class="s0">, </span><span class="s1">btnDelete</span><span class="s0">, </span><span class="s1">btnBlock</span><span class="s0">, </span><span class="s1">btnPlusChat</span><span class="s0">;</span>
+    <span class="s1">FirebaseDatabase firebaseDatabase</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference databaseReference</span><span class="s0">;</span>
+    <span class="s1">FirebaseAuth firebaseAuth</span><span class="s0">;</span>
+    <span class="s1">FirebaseUser firebaseUser</span><span class="s0">;</span>
+
+    <span class="s1">@Nullable</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(@NonNull LayoutInflater inflater</span><span class="s0">, </span><span class="s1">@Nullable ViewGroup container</span><span class="s0">, </span><span class="s1">@Nullable Bundle savedInstanceState) {</span>
+        <span class="s1">ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_layout3</span><span class="s0">,</span><span class="s1">container</span><span class="s0">,false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lvBoard = root.findViewById(R.id.lvBoard)</span><span class="s0">;</span>
+        <span class="s1">btnAllF = (Button)root.findViewById(R.id.btnAllF)</span><span class="s0">;</span>
+        <span class="s1">btnChat = (Button)root.findViewById(R.id.btnChat)</span><span class="s0">;</span>
+        <span class="s1">btnDelete = root.findViewById(R.id.btnDelete)</span><span class="s0">;</span>
+        <span class="s1">btnBlock = root.findViewById(R.id.btnBlock)</span><span class="s0">;</span>
+        <span class="s1">btnPlusChat = root.findViewById(R.id.btnPlusChat)</span><span class="s0">;</span>
+        <span class="s1">profileAdapter = </span><span class="s0">new </span><span class="s1">ProfileAdapter()</span><span class="s0">;</span>
+        <span class="s1">chatAdapter = </span><span class="s0">new </span><span class="s1">ChatAdapter()</span><span class="s0">;</span>
+
+        <span class="s1">btnPlusChat.setVisibility(View.GONE)</span><span class="s0">;</span>
+
+        <span class="s2">//btnPlusChat.setVisibility(View.GONE);</span>
+
+        <span class="s2">// 1.현재 로그인한 사용자를 가져옴</span>
+        <span class="s1">firebaseUser = firebaseAuth.getInstance().getCurrentUser()</span><span class="s0">;</span>
+        <span class="s1">Log.i(</span><span class="s3">&quot;userdisplayname&quot; </span><span class="s0">,</span><span class="s1">firebaseUser.getDisplayName())</span><span class="s0">;</span>
+
+        <span class="s1">firebaseDatabase = FirebaseDatabase.getInstance()</span><span class="s0">;</span>
+        <span class="s1">databaseReference = firebaseDatabase.getReference()</span><span class="s0">;</span>
+        <span class="s2">/////////////////</span>
+<span class="s2">//        int bundle = getArguments().getInt(&quot;index&quot;);</span>
+<span class="s2">//        if (getArguments() != null){</span>
+<span class="s2">//            Toast.makeText(root.getContext(), String.valueOf(bundle), Toast.LENGTH_SHORT).show();</span>
+<span class="s2">//            Log.i(&quot;bundel&quot;, String.valueOf(bundle));</span>
+<span class="s2">//        } else {</span>
+<span class="s2">//            Log.i(&quot;bundel error&quot;, String.valueOf(bundle));</span>
+<span class="s2">//        }</span>
+        <span class="s2">/////////////////</span>
+        <span class="s2">// 2-1 친구 목록</span>
+        <span class="s1">Query allFQuery = databaseReference.child(</span><span class="s3">&quot;Users&quot;</span><span class="s1">).orderByChild(</span><span class="s3">&quot;uid&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">allFQuery.addValueEventListener(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s0">for</span><span class="s1">(DataSnapshot snapshot1 : snapshot.getChildren()){</span>
+                    <span class="s1">String key = snapshot1.getKey()</span><span class="s0">;</span>
+                    <span class="s2">//Log.i(&quot;key&quot;, key);</span>
+                    <span class="s1">Profile get = snapshot1.getValue(Profile.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">String name = get.name</span><span class="s0">;</span>
+                    <span class="s1">profileAdapter.addItem(R.drawable.ic_baseline_account_circle_24</span><span class="s0">,</span><span class="s1">name)</span><span class="s0">;</span>
+                    <span class="s1">profileAdapter.notifyDataSetChanged()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+                <span class="s1">Log.w(</span><span class="s3">&quot;TAG&quot;</span><span class="s0">, </span><span class="s3">&quot;loadPost:onCancelled&quot;</span><span class="s0">, </span><span class="s1">error.toException())</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">btnPlusChat.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24</span><span class="s0">, </span><span class="s3">&quot;test&quot;</span><span class="s0">, </span><span class="s3">&quot;sample view&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s2">// 2-2 채팅 목록</span>
+        <span class="s1">firebaseDatabase = FirebaseDatabase.getInstance()</span><span class="s0">;</span>
+        <span class="s1">databaseReference = firebaseDatabase.getReference()</span><span class="s0">;</span>
+
+        <span class="s1">Query chatQuery = databaseReference.child(</span><span class="s3">&quot;Chat&quot;</span><span class="s1">).orderByChild(</span><span class="s3">&quot;nickname&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">chatQuery.addValueEventListener(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s0">for</span><span class="s1">(DataSnapshot snapshot2 : snapshot.getChildren()){</span>
+<span class="s2">//                    if(snapshot.getChildrenCount() == 0){</span>
+<span class="s2">//                        btnPlusChat.setVisibility(View.VISIBLE);</span>
+<span class="s2">//                    }</span>
+                    <span class="s1">String key = snapshot2.getKey()</span><span class="s0">;</span>
+                    <span class="s1">ChatData get = snapshot2.getValue(ChatData.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">String name = get.getNickname()</span><span class="s0">;</span>
+                    <span class="s1">String msg = get.getMsg()</span><span class="s0">;</span>
+                    <span class="s1">chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24</span><span class="s0">, </span><span class="s1">key</span><span class="s0">, </span><span class="s1">name)</span><span class="s0">;</span>
+                    <span class="s1">chatAdapter.notifyDataSetChanged()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+                <span class="s1">Log.w(</span><span class="s3">&quot;TAG&quot;</span><span class="s0">, </span><span class="s3">&quot;loadPost:onCancelled&quot;</span><span class="s0">, </span><span class="s1">error.toException())</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s2">//chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, &quot;test&quot;, &quot;sample view&quot;);</span>
+
+        <span class="s1">lvBoard.setAdapter(profileAdapter)</span><span class="s0">;</span>
+
+        <span class="s1">btnAllF.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">lvBoard.setAdapter(profileAdapter)</span><span class="s0">;</span>
+                <span class="s1">btnPlusChat.setVisibility(View.GONE)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">btnChat.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">lvBoard.setAdapter(chatAdapter)</span><span class="s0">;</span>
+                <span class="s1">btnPlusChat.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">lvBoard.setOnItemClickListener(</span><span class="s0">new </span><span class="s1">AdapterView.OnItemClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onItemClick(AdapterView&lt;?&gt; parent</span><span class="s0">, </span><span class="s1">View view</span><span class="s0">, int </span><span class="s1">position</span><span class="s0">, long </span><span class="s1">id) {</span>
+                <span class="s1">Toast.makeText(getContext()</span><span class="s0">, </span><span class="s1">position +</span><span class="s3">&quot;번째 클릭함&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(getContext()</span><span class="s0">,</span><span class="s1">ChatActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s2">//                intent.putExtra(&quot;list name&quot;,list.get(position).name);</span>
+<span class="s2">//                intent.putExtra(&quot;list message&quot;, list.get(position).message);</span>
+                <span class="s1">intent.putExtra(</span><span class="s3">&quot;index&quot;</span><span class="s0">,</span><span class="s1">position)</span><span class="s0">;</span>
+                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s0">return </span><span class="s1">root</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<html>
+<head>
+<title>ChatDataAdapter.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.s1 { color: #cc7832;}
+.s2 { color: #808080;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ChatDataAdapter.java</font>
+</center></td></tr></table>
+<pre>
+<span class="s1">package </span><span class="s0">com.example.project</span><span class="s1">;</span>
+
+<span class="s1">import </span><span class="s0">android.content.Context</span><span class="s1">;</span>
+<span class="s1">import </span><span class="s0">android.util.Log</span><span class="s1">;</span>
+<span class="s1">import </span><span class="s0">android.view.LayoutInflater</span><span class="s1">;</span>
+<span class="s1">import </span><span class="s0">android.view.View</span><span class="s1">;</span>
+<span class="s1">import </span><span class="s0">android.view.ViewGroup</span><span class="s1">;</span>
+<span class="s1">import </span><span class="s0">android.widget.LinearLayout</span><span class="s1">;</span>
+<span class="s1">import </span><span class="s0">android.widget.TextView</span><span class="s1">;</span>
+
+<span class="s1">import </span><span class="s0">androidx.annotation.NonNull</span><span class="s1">;</span>
+<span class="s1">import </span><span class="s0">androidx.recyclerview.widget.RecyclerView</span><span class="s1">;</span>
+
+<span class="s1">import </span><span class="s0">java.util.List</span><span class="s1">;</span>
+
+<span class="s2">// 아이템(채팅)에 대한 뷰 생성</span>
+<span class="s1">public class </span><span class="s0">ChatDataAdapter </span><span class="s1">extends </span><span class="s0">RecyclerView.Adapter&lt;ChatDataAdapter.MyViewHolder&gt; {</span>
+
+    <span class="s1">private </span><span class="s0">List&lt;ChatData&gt; mDataset</span><span class="s1">;</span>
+    <span class="s1">private </span><span class="s0">String myNickname</span><span class="s1">;</span>
+    <span class="s2">// 새로운 유형 표시</span>
+    <span class="s0">@NonNull</span>
+    <span class="s0">@Override</span>
+    <span class="s1">public </span><span class="s0">MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent</span><span class="s1">, int </span><span class="s0">viewType) {</span>
+        <span class="s0">LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.chatting</span><span class="s1">,</span><span class="s0">parent</span><span class="s1">,false</span><span class="s0">)</span><span class="s1">;</span>
+        <span class="s0">MyViewHolder vh = </span><span class="s1">new </span><span class="s0">MyViewHolder(v)</span><span class="s1">;</span>
+        <span class="s1">return </span><span class="s0">vh</span><span class="s1">;</span>
+    <span class="s0">}</span>
+
+    <span class="s2">// 지정된 위치에 데이터를 표시</span>
+    <span class="s0">@Override</span>
+    <span class="s1">public void </span><span class="s0">onBindViewHolder(@NonNull MyViewHolder holder</span><span class="s1">, int </span><span class="s0">position) {</span>
+        <span class="s0">ChatData chat = mDataset.get(position)</span><span class="s1">;</span>
+
+<span class="s2">//        if (chat.getNickname()== null){</span>
+<span class="s2">//            holder.tv_nickname.setText(&quot;알수없음&quot;);</span>
+<span class="s2">//        } else{</span>
+<span class="s2">//            holder.tv_nickname.setText(chat.getNickname());</span>
+<span class="s2">//        }</span>
+        <span class="s0">holder.tv_nickname.setText(chat.getNickname())</span><span class="s1">;</span>
+        <span class="s0">holder.tv_message.setText(chat.getMsg())</span><span class="s1">;</span>
+
+        <span class="s1">if </span><span class="s0">(chat.getNickname().equals(</span><span class="s1">this</span><span class="s0">.myNickname)){</span>
+            <span class="s0">holder.tv_message.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END)</span><span class="s1">;</span>
+            <span class="s0">holder.tv_nickname.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END)</span><span class="s1">;</span>
+        <span class="s0">} </span><span class="s1">else</span><span class="s0">{</span>
+            <span class="s0">holder.tv_message.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START)</span><span class="s1">;</span>
+            <span class="s0">holder.tv_nickname.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START)</span><span class="s1">;</span>
+        <span class="s0">}</span>
+    <span class="s0">}</span>
+    <span class="s2">// 데이터 세트의 항목 수</span>
+    <span class="s0">@Override</span>
+    <span class="s1">public int </span><span class="s0">getItemCount() {</span>
+        <span class="s1">return </span><span class="s0">mDataset == </span><span class="s1">null </span><span class="s0">? </span><span class="s3">0 </span><span class="s0">: mDataset.size()</span><span class="s1">;</span>
+    <span class="s0">}</span>
+
+    <span class="s1">public </span><span class="s0">ChatData getChat(</span><span class="s1">int </span><span class="s0">position){</span>
+        <span class="s1">return </span><span class="s0">mDataset != </span><span class="s1">null </span><span class="s0">? mDataset.get(position) : </span><span class="s1">null;</span>
+    <span class="s0">}</span>
+    <span class="s2">// recyclerView 에 대한 서브 뷰</span>
+    <span class="s1">public static class </span><span class="s0">MyViewHolder </span><span class="s1">extends </span><span class="s0">RecyclerView.ViewHolder{</span>
+        <span class="s1">public </span><span class="s0">View rootView</span><span class="s1">;</span>
+        <span class="s1">public </span><span class="s0">TextView tv_nickname</span><span class="s1">;</span>
+        <span class="s1">public </span><span class="s0">TextView tv_message</span><span class="s1">;</span>
+        <span class="s1">public </span><span class="s0">MyViewHolder(View v){</span>
+            <span class="s2">// ViewHolder 를 이용하여 UI가 변경 할 때마다 findViewById를 계속 부르지 않아 속도가 빠름</span>
+            <span class="s1">super</span><span class="s0">(v)</span><span class="s1">;</span>
+            <span class="s0">tv_nickname = v.findViewById(R.id.tv_nickname)</span><span class="s1">;</span>
+            <span class="s0">tv_message = v.findViewById(R.id.tv_message)</span><span class="s1">;</span>
+            <span class="s0">rootView = v</span><span class="s1">;</span>
+
+        <span class="s0">}</span>
+    <span class="s0">}</span>
+
+    <span class="s1">public </span><span class="s0">ChatDataAdapter(List&lt;ChatData&gt; myDataset</span><span class="s1">, </span><span class="s0">Context context</span><span class="s1">, </span><span class="s0">String myNickname){</span>
+        <span class="s0">mDataset = myDataset</span><span class="s1">;</span>
+        <span class="s1">this</span><span class="s0">.myNickname = myNickname</span><span class="s1">;</span>
+        <span class="s0">Log.i(</span><span class="s4">&quot;myNickname&quot;</span><span class="s1">, </span><span class="s0">myNickname)</span><span class="s1">;</span>
+    <span class="s0">}</span>
+
+    <span class="s1">public void </span><span class="s0">addChat(ChatData chat){</span>
+        <span class="s0">mDataset.add(chat)</span><span class="s1">;</span>
+        <span class="s0">notifyItemInserted(mDataset.size()-</span><span class="s3">1</span><span class="s0">)</span><span class="s1">; </span><span class="s2">// 갱신</span>
+    <span class="s0">}</span>
+<span class="s0">}</span></pre>
+</body>
+</html>

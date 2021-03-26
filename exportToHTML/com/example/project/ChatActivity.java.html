@@ -1,0 +1,143 @@
+<html>
+<head>
+<title>ChatActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ChatActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.project</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.LinearLayoutManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseUser</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ChildEventListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.Query</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">ChatActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s0">private </span><span class="s1">RecyclerView mRecyclerView</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">RecyclerView.Adapter mAdapter</span><span class="s0">;</span><span class="s2">// 데이터와 아이템(채팅)의 뷰</span>
+    <span class="s0">private </span><span class="s1">RecyclerView.LayoutManager mLayoutManager</span><span class="s0">;</span><span class="s2">// 아이템의 항목 배치</span>
+    <span class="s0">private </span><span class="s1">List&lt;ChatData&gt; chatList</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String nick = </span><span class="s3">&quot;&quot;</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">DatabaseReference myRef</span><span class="s0">;</span>
+    <span class="s1">FirebaseAuth firebaseAuth</span><span class="s0">;</span>
+    <span class="s1">FirebaseUser user</span><span class="s0">;</span>
+    <span class="s1">FirebaseDatabase firebaseDatabase</span><span class="s0">;</span>
+    <span class="s1">ChatAdapter chatAdapter</span><span class="s0">;</span>
+
+    <span class="s0">private </span><span class="s1">EditText edt_chat</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Button btn_send</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_chat)</span><span class="s0">;</span>
+
+        <span class="s1">btn_send = findViewById(R.id.btn_send)</span><span class="s0">;</span>
+        <span class="s1">edt_chat = findViewById(R.id.edt_chat)</span><span class="s0">;</span>
+
+        <span class="s1">user = firebaseAuth.getInstance().getCurrentUser()</span><span class="s0">;</span>
+
+        <span class="s1">nick = user.getDisplayName()</span><span class="s0">;</span>
+        <span class="s2">//Log.i(&quot;nick&quot;,nick);</span>
+
+        <span class="s1">btn_send.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">String msg = edt_chat.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">edt_chat.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(msg != </span><span class="s0">null</span><span class="s1">){</span>
+                    <span class="s1">ChatData chat = </span><span class="s0">new </span><span class="s1">ChatData()</span><span class="s0">;</span>
+                    <span class="s1">chat.setNickname(nick)</span><span class="s0">;</span>
+                    <span class="s1">chat.setMsg(msg)</span><span class="s0">;</span>
+                    <span class="s1">myRef.push().setValue(chat)</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(ChatActivity.</span><span class="s0">this, </span><span class="s1">nick</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">mRecyclerView = findViewById(R.id.recyclerview)</span><span class="s0">;</span>
+        <span class="s1">mRecyclerView.setHasFixedSize(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">mLayoutManager = </span><span class="s0">new </span><span class="s1">LinearLayoutManager(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">mRecyclerView.setLayoutManager(mLayoutManager)</span><span class="s0">;</span>
+        <span class="s1">chatList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">mAdapter = </span><span class="s0">new </span><span class="s1">ChatDataAdapter(chatList</span><span class="s0">, </span><span class="s1">ChatActivity.</span><span class="s0">this, </span><span class="s1">nick)</span><span class="s0">;</span>
+
+        <span class="s1">mRecyclerView.setAdapter(mAdapter)</span><span class="s0">;</span>
+
+        <span class="s1">Intent intent = getIntent()</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">index = intent.getIntExtra(</span><span class="s3">&quot;index&quot;</span><span class="s0">,</span><span class="s4">0</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">Log.i(</span><span class="s3">&quot;index값 넘어옴&quot;</span><span class="s0">, </span><span class="s1">String.valueOf(index))</span><span class="s0">;</span>
+
+        <span class="s1">firebaseDatabase = FirebaseDatabase.getInstance()</span><span class="s0">;</span><span class="s2">// 선언과 생성</span>
+        <span class="s1">myRef = firebaseDatabase.getReference(</span><span class="s3">&quot;Chat&quot;</span><span class="s1">).child(</span><span class="s3">&quot;Room&quot;</span><span class="s1">+index)</span><span class="s0">;</span><span class="s2">// 해당 db를 참조</span>
+
+
+        <span class="s1">myRef.addChildEventListener(</span><span class="s0">new </span><span class="s1">ChildEventListener() {</span>
+            <span class="s2">// 데이터 추가</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onChildAdded(@NonNull DataSnapshot dataSnapshot</span><span class="s0">, </span><span class="s1">@Nullable String previousChildName) {</span>
+                <span class="s2">// dataSnapshot : 위 메서드가 호출될 때의 data</span>
+                <span class="s1">ChatData chat = dataSnapshot.getValue(ChatData.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">((ChatDataAdapter)mAdapter).addChat(chat)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s2">// 데이터 변화</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onChildChanged(@NonNull DataSnapshot dataSnapshot</span><span class="s0">, </span><span class="s1">@Nullable String previousChildName) {</span>
+
+            <span class="s1">}</span>
+            <span class="s2">// 데이터 제거</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onChildRemoved(@NonNull DataSnapshot dataSnapshot) {</span>
+
+            <span class="s1">}</span>
+            <span class="s2">// db 리스트 위치 변경</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onChildMoved(@NonNull DataSnapshot dataSnapshot</span><span class="s0">, </span><span class="s1">@Nullable String previousChildName) {</span>
+
+            <span class="s1">}</span>
+            <span class="s2">// 데이터 오류</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<html>
+<head>
+<title>RegisterActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+RegisterActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.project</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.ProgressDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.ActionBar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnCompleteListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Task</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.AuthResult</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseUser</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.UserProfileChangeRequest</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span>
+<span class="s2">// 회원가입 화면(firebase-authentication 등록)</span>
+<span class="s0">public class </span><span class="s1">RegisterActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s1">EditText edtInputName</span><span class="s0">, </span><span class="s1">edtInputID</span><span class="s0">, </span><span class="s1">edtInputPW</span><span class="s0">, </span><span class="s1">edtInputRepeat</span><span class="s0">;</span>
+    <span class="s1">Button btnRegister</span><span class="s0">, </span><span class="s1">btnLogin</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">FirebaseAuth firebaseAuth</span><span class="s0">;</span>
+    <span class="s2">//private FirebaseDatabase firebaseDatabase;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_register)</span><span class="s0">;</span>
+
+        <span class="s1">edtInputName = findViewById(R.id.edtInputName)</span><span class="s0">;</span>
+        <span class="s1">edtInputID = findViewById(R.id.edtInputID)</span><span class="s0">;</span>
+        <span class="s1">edtInputPW = findViewById(R.id.edtInputPW)</span><span class="s0">;</span>
+        <span class="s1">edtInputRepeat = findViewById(R.id.edtInputRepeat)</span><span class="s0">;</span>
+        <span class="s1">btnRegister = findViewById(R.id.btnRegister)</span><span class="s0">;</span>
+        <span class="s1">btnLogin = findViewById(R.id.btnLogin)</span><span class="s0">;</span>
+
+        <span class="s1">btnLogin.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(RegisterActivity.</span><span class="s0">this, </span><span class="s1">MainActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+<span class="s2">//        //액션 바 등록하기</span>
+<span class="s2">//        ActionBar actionBar = getSupportActionBar();</span>
+<span class="s2">//        actionBar.setTitle(&quot;Create Account&quot;);</span>
+<span class="s2">//</span>
+<span class="s2">//        actionBar.setDisplayHomeAsUpEnabled(true); //뒤로가기버튼</span>
+<span class="s2">//        actionBar.setDisplayShowHomeEnabled(true); //홈 아이콘</span>
+
+
+        <span class="s2">//파이어베이스 접근 설정</span>
+        <span class="s2">// user = firebaseAuth.getCurrentUser();</span>
+        <span class="s1">firebaseAuth =  FirebaseAuth.getInstance()</span><span class="s0">;</span>
+        <span class="s2">//firebaseDatabase = FirebaseDatabase.getInstance().getReference();</span>
+
+        <span class="s2">//파이어베이스 user 로 접근</span>
+
+        <span class="s2">//가입버튼 클릭리스너   --&gt;  firebase에 데이터를 저장한다.</span>
+        <span class="s1">btnRegister.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener(){</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s2">//가입 정보 가져오기</span>
+                <span class="s0">final </span><span class="s1">String email = edtInputID.getText().toString().trim()</span><span class="s0">;</span>
+                <span class="s1">String pwd = edtInputPW.getText().toString().trim()</span><span class="s0">;</span>
+                <span class="s1">String pwdcheck = edtInputRepeat.getText().toString().trim()</span><span class="s0">;</span>
+
+                <span class="s0">if</span><span class="s1">(pwd.equals(pwdcheck)) {</span>
+                    <span class="s2">//Log.d(TAG, &quot;등록 버튼 &quot; + email + &quot; , &quot; + pwd);</span>
+                    <span class="s0">final </span><span class="s1">ProgressDialog mDialog = </span><span class="s0">new </span><span class="s1">ProgressDialog(RegisterActivity.</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">mDialog.setMessage(</span><span class="s3">&quot;가입중입니다...&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">mDialog.show()</span><span class="s0">;</span>
+
+                    <span class="s2">//파이어베이스에 신규계정 등록하기</span>
+                    <span class="s1">firebaseAuth.createUserWithEmailAndPassword(email</span><span class="s0">, </span><span class="s1">pwd).addOnCompleteListener(RegisterActivity.</span><span class="s0">this, new </span><span class="s1">OnCompleteListener&lt;AuthResult&gt;() {</span>
+                        <span class="s1">@Override</span>
+                        <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;AuthResult&gt; task) {</span>
+                            <span class="s2">//가입 성공시</span>
+                            <span class="s0">if </span><span class="s1">(task.isSuccessful()) {</span>
+                                <span class="s1">mDialog.dismiss()</span><span class="s0">;</span>
+                                <span class="s1">FirebaseUser user = firebaseAuth.getCurrentUser()</span><span class="s0">;</span>
+                                <span class="s1">String email = user.getEmail()</span><span class="s0">;</span>
+                                <span class="s1">String uid = user.getUid()</span><span class="s0">;</span>
+                                <span class="s1">String name = edtInputName.getText().toString().trim()</span><span class="s0">;</span>
+
+                                <span class="s2">// 프로필 수정하기(displayName을 사용하기 위해)</span>
+                                <span class="s1">UserProfileChangeRequest profileUpdates = </span><span class="s0">new </span><span class="s1">UserProfileChangeRequest.Builder()</span>
+                                        <span class="s1">.setDisplayName(name).build()</span><span class="s0">;</span>
+                                <span class="s1">user.updateProfile(profileUpdates).addOnCompleteListener(</span><span class="s0">new </span><span class="s1">OnCompleteListener&lt;Void&gt;() {</span>
+                                    <span class="s1">@Override</span>
+                                    <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;Void&gt; task) {</span>
+                                        <span class="s0">if </span><span class="s1">(task.isSuccessful()){</span>
+                                            <span class="s1">Log.i(</span><span class="s3">&quot;tag&quot;</span><span class="s0">,</span><span class="s3">&quot;user profile update&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                            <span class="s1">String displayName = user.getDisplayName()</span><span class="s0">;</span>
+                                        <span class="s1">}</span>
+                                    <span class="s1">}</span>
+                                <span class="s1">})</span><span class="s0">;</span>
+                                <span class="s1">String displayName = user.getDisplayName()</span><span class="s0">;</span>
+                                <span class="s2">//Log.i(&quot;displayname&quot;,displayName);</span>
+
+                                <span class="s2">//해쉬맵 테이블을 파이어베이스 데이터베이스에 저장</span>
+                                <span class="s1">HashMap&lt;Object</span><span class="s0">,</span><span class="s1">String&gt; hashMap = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span>
+
+                                <span class="s1">hashMap.put(</span><span class="s3">&quot;uid&quot;</span><span class="s0">,</span><span class="s1">uid)</span><span class="s0">;</span>
+                                <span class="s1">hashMap.put(</span><span class="s3">&quot;email&quot;</span><span class="s0">,</span><span class="s1">email)</span><span class="s0">;</span>
+                                <span class="s1">hashMap.put(</span><span class="s3">&quot;name&quot;</span><span class="s0">,</span><span class="s1">name)</span><span class="s0">;</span>
+                                <span class="s1">hashMap.put(</span><span class="s3">&quot;displayName&quot;</span><span class="s0">,</span><span class="s1">displayName)</span><span class="s0">;</span>
+
+                                <span class="s2">// db접근 권한</span>
+                                <span class="s1">FirebaseDatabase database = FirebaseDatabase.getInstance()</span><span class="s0">;</span>
+                                <span class="s2">// db에 Users 인스턴스 가짐</span>
+                                <span class="s1">DatabaseReference reference = database.getReference(</span><span class="s3">&quot;Users&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                <span class="s2">// 그 자식에 hashMap 넣기</span>
+                                <span class="s1">reference.child(uid).setValue(hashMap)</span><span class="s0">;</span>
+
+                                <span class="s2">//가입이 이루어졌을시 가입 화면을 빠져나감.</span>
+                                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(RegisterActivity.</span><span class="s0">this, </span><span class="s1">MainActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                                <span class="s1">finish()</span><span class="s0">;</span>
+                                <span class="s1">Toast.makeText(RegisterActivity.</span><span class="s0">this, </span><span class="s3">&quot;회원가입에 성공하셨습니다.&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                                <span class="s1">mDialog.dismiss()</span><span class="s0">;</span>
+                                <span class="s1">Toast.makeText(RegisterActivity.</span><span class="s0">this, </span><span class="s3">&quot;회원가입에 실패하셨습니다.&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                <span class="s0">return;  </span><span class="s2">//해당 메소드 진행을 멈추고 빠져나감.</span>
+                            <span class="s1">}</span>
+                        <span class="s1">}</span>
+                    <span class="s1">})</span><span class="s0">;</span>
+
+                    <span class="s2">//비밀번호 오류시</span>
+                <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+                    <span class="s1">Toast.makeText(RegisterActivity.</span><span class="s0">this, </span><span class="s3">&quot;비밀번호가 틀렸습니다. 다시 입력해 주세요.&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s0">return;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public boolean </span><span class="s1">onSupportNavigateUp(){</span>
+        <span class="s1">onBackPressed()</span><span class="s0">;; </span><span class="s2">// 뒤로가기 버튼이 눌렸을시</span>
+        <span class="s0">return super</span><span class="s1">.onSupportNavigateUp()</span><span class="s0">; </span><span class="s2">// 뒤로가기 버튼</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

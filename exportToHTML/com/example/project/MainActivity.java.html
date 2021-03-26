@@ -1,0 +1,186 @@
+<html>
+<head>
+<title>MainActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.project</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s2">//import com.google.android.gms.auth.api.Auth;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.auth.api.signin.GoogleSignInAccount</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.auth.api.signin.GoogleSignInOptions</span><span class="s0">;</span>
+<span class="s2">//import com.google.android.gms.auth.api.signin.GoogleSignInResult;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.common.ConnectionResult</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.common.SignInButton</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.common.api.GoogleApiClient</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnCompleteListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Task</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.AuthCredential</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.AuthResult</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseUser</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.GoogleAuthProvider</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span>
+
+<span class="s2">// 시작화면(로그인 화면- firebase연동 Authentication에서 정보를 가져와 부합시 데이터베이스 저장)</span>
+<span class="s0">public class </span><span class="s1">MainActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity{</span>
+
+    <span class="s1">EditText login_id</span><span class="s0">, </span><span class="s1">login_pw</span><span class="s0">;</span>
+    <span class="s1">Button btnLogin</span><span class="s0">;</span>
+    <span class="s1">TextView moveToRegister</span><span class="s0">, </span><span class="s1">loginGoogle</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">FirebaseAuth firebaseAuth</span><span class="s0">;</span>
+<span class="s2">//    SignInButton btn_google;</span>
+<span class="s2">//    private GoogleApiClient googleApiClient; // 구글 API 클라이언트 객체</span>
+<span class="s2">//    private static final int REQ_SIGN_GOOGLE = 100; // 구글 로그인 결과 코드</span>
+    <span class="s1">FirebaseDatabase firebaseDatabase</span><span class="s0">;</span>
+    <span class="s1">DatabaseReference databaseReference</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_main)</span><span class="s0">;</span>
+
+        <span class="s1">firebaseAuth = FirebaseAuth.getInstance()</span><span class="s0">;</span>
+
+        <span class="s1">btnLogin = (Button) findViewById(R.id.btnLogin)</span><span class="s0">;</span>
+        <span class="s1">moveToRegister = (TextView) findViewById(R.id.moveToRegister)</span><span class="s0">;</span>
+        <span class="s1">login_id = (EditText) findViewById(R.id.login_id)</span><span class="s0">;</span>
+        <span class="s1">login_pw = (EditText) findViewById(R.id.login_pw)</span><span class="s0">;</span>
+
+        <span class="s1">btnLogin.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">String id = login_id.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String pw = login_pw.getText().toString()</span><span class="s0">;</span>
+
+                <span class="s1">firebaseAuth.signInWithEmailAndPassword(id</span><span class="s0">, </span><span class="s1">pw).addOnCompleteListener(MainActivity.</span><span class="s0">this, new </span><span class="s1">OnCompleteListener&lt;AuthResult&gt;() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;AuthResult&gt; task) {</span>
+                        <span class="s0">if </span><span class="s1">(task.isSuccessful()) {</span>
+                            <span class="s1">FirebaseUser user = firebaseAuth.getCurrentUser()</span><span class="s0">;</span>
+                            <span class="s1">Toast.makeText(MainActivity.</span><span class="s0">this, </span><span class="s1">user.getDisplayName() + </span><span class="s3">&quot; 님 반갑습니다&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                            <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(MainActivity.</span><span class="s0">this, </span><span class="s1">BottomNavigation.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                            <span class="s1">Toast.makeText(MainActivity.</span><span class="s0">this, </span><span class="s3">&quot;로그인 오류&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">}</span>
+                <span class="s1">})</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">moveToRegister.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(MainActivity.</span><span class="s0">this, </span><span class="s1">RegisterActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+<span class="s2">//        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)</span>
+<span class="s2">//                .requestIdToken(getString(R.string.default_web_client_id))</span>
+<span class="s2">//                .requestEmail()</span>
+<span class="s2">//                .build();</span>
+<span class="s2">//</span>
+<span class="s2">//        googleApiClient = new GoogleApiClient.Builder(this)</span>
+<span class="s2">//                .enableAutoManage(this, this)</span>
+<span class="s2">//                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)</span>
+<span class="s2">//                .build();</span>
+<span class="s2">//</span>
+<span class="s2">//        btn_google = findViewById(R.id.btn_google);</span>
+<span class="s2">//        btn_google.setOnClickListener(new View.OnClickListener() { // 구글 로그인 버튼을 클릭했을 때 이곳을 수행.</span>
+<span class="s2">//            @Override</span>
+<span class="s2">//            public void onClick(View view) {</span>
+<span class="s2">//                Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);</span>
+<span class="s2">//                startActivityForResult(intent, REQ_SIGN_GOOGLE);</span>
+<span class="s2">//            }</span>
+<span class="s2">//        });</span>
+<span class="s2">//</span>
+<span class="s2">//    }</span>
+<span class="s2">//    @Override</span>
+<span class="s2">//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) { // 구글 로그인 인증을 요청 했을 때 결과 값을 되돌려 받는 곳.</span>
+<span class="s2">//        super.onActivityResult(requestCode, resultCode, data);</span>
+<span class="s2">//</span>
+<span class="s2">//        if(requestCode == REQ_SIGN_GOOGLE) {</span>
+<span class="s2">//            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);</span>
+<span class="s2">//            if(result.isSuccess()) { // 인증결과가 성공적이면..</span>
+<span class="s2">//                Toast.makeText(this, &quot;인증 성공&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="s2">//                GoogleSignInAccount account = result.getSignInAccount(); // account 라는 데이터는 구글로그인 정보를 담고있습니다. (닉네임,프로필사진Url,이메일주소...등)</span>
+<span class="s2">//                resultLogin(account); // 로그인 결과 값 출력 수행하라는 메소드</span>
+<span class="s2">//            } else{</span>
+<span class="s2">//                Toast.makeText(this, &quot;인증 실패&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="s2">//                // Log.i(&quot;리퀘스트 코드&quot;, Integer.toString(requestCode));// 100</span>
+<span class="s2">//                Log.i(&quot;리절트&quot;, String.valueOf(result));</span>
+<span class="s2">//                Log.i(&quot;리절트 오른쪽&quot;,String.valueOf(Auth.GoogleSignInApi.getSignInResultFromIntent(data)));</span>
+<span class="s2">//            }</span>
+<span class="s2">//        }</span>
+<span class="s2">//</span>
+<span class="s2">//    }</span>
+<span class="s2">//    // 로그인한 후 ID토큰을 가져와 firebase 사용자 인증토큰과 교환후 인증</span>
+<span class="s2">//    private void resultLogin(final GoogleSignInAccount account) {</span>
+<span class="s2">//        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);</span>
+<span class="s2">//        firebaseAuth.signInWithCredential(credential)</span>
+<span class="s2">//                .addOnCompleteListener(this, new OnCompleteListener&lt;AuthResult&gt;() {</span>
+<span class="s2">//                    @Override</span>
+<span class="s2">//                    public void onComplete(@NonNull Task&lt;AuthResult&gt; task) {</span>
+<span class="s2">//                        if(task.isSuccessful()) { // 로그인이 성공했으면...</span>
+<span class="s2">//                            Toast.makeText(MainActivity.this, &quot;로그인 성공&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="s2">//</span>
+<span class="s2">//                            HashMap&lt;Object,String&gt; hashMap = new HashMap&lt;&gt;();</span>
+<span class="s2">//                            hashMap.put(&quot;name&quot;,account.getDisplayName());</span>
+<span class="s2">//                            hashMap.put(&quot;email&quot;,account.getEmail());</span>
+<span class="s2">//                            hashMap.put(&quot;id&quot;,account.getId());</span>
+<span class="s2">//                            hashMap.put(&quot;photoURL&quot;,String.valueOf(account.getPhotoUrl()));</span>
+<span class="s2">//                            // db접근 권한</span>
+<span class="s2">//                            FirebaseDatabase database = FirebaseDatabase.getInstance();</span>
+<span class="s2">//                            // db에 Users 인스턴스 가짐</span>
+<span class="s2">//                            DatabaseReference reference = database.getReference(&quot;Users&quot;);</span>
+<span class="s2">//                            // 그 자식에 hashMap 넣기</span>
+<span class="s2">//                            reference.child(account.getId()).setValue(hashMap);</span>
+<span class="s2">//</span>
+<span class="s2">//                            Intent intent = new Intent(getApplicationContext(), BottomNavigation.class);</span>
+<span class="s2">//                            intent.putExtra(&quot;nickName&quot;,account.getDisplayName());</span>
+<span class="s2">//                            intent.putExtra(&quot;photoUrl&quot;,String.valueOf(account.getPhotoUrl())); // String.valueOf() 특정 자료형을 String 형태로 변환.</span>
+<span class="s2">//                            startActivity(intent);</span>
+<span class="s2">//                        } else { // 로그인이 실패했으면..</span>
+<span class="s2">//                            Toast.makeText(MainActivity.this, &quot;로그인 실패&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="s2">//                        }</span>
+<span class="s2">//                    }</span>
+<span class="s2">//                });</span>
+<span class="s2">//    }</span>
+<span class="s2">//</span>
+<span class="s2">//    @Override</span>
+<span class="s2">//    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {</span>
+<span class="s2">//</span>
+<span class="s2">//    }</span>
+<span class="s1">}</span></pre>
+</body>
+</html>
