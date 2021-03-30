@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             Toast.makeText(MainActivity.this, user.getDisplayName() + " 님 반갑습니다", Toast.LENGTH_SHORT).show();
+                            String emailTest = user.getEmail();
+                            Log.i("emailTEST",emailTest);
                             Intent intent = new Intent(MainActivity.this, BottomNavigation.class);
                             startActivity(intent);
                         } else {

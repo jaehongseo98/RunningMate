@@ -115,6 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 hashMap.put("email",email);
                                 hashMap.put("name",name);
                                 hashMap.put("displayName",displayName);
+                                hashMap.put("ProfileUrl","");
 
                                 // db접근 권한
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();

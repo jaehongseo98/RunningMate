@@ -2,6 +2,7 @@ package com.example.project;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,10 +19,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +38,8 @@ public class ProfileAdapter extends BaseAdapter {
     ArrayList<Profile> dataset = new ArrayList<>();
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    FirebaseAuth fireAuth;
+    FirebaseUser fireUser;
 
     // dataset 에 있는 항목 수
     @Override
@@ -70,11 +75,13 @@ public class ProfileAdapter extends BaseAdapter {
         TextView tvName = convertView.findViewById(R.id.tvName);
 
         // 위젯에 데이터 반영
-        ivIcon.setImageResource(profile.getIcon());
+        Glide.with(convertView).load(profile.getProfileUrl()).into(ivIcon);
         tvName.setText(profile.getName());
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
+        fireUser = fireAuth.getInstance().getCurrentUser();
+        String currentName = fireUser.getDisplayName();
 
         // 해당 리스트뷰 클릭 이벤트
         RelativeLayout relativeCmdArea = convertView.findViewById(R.id.relativeCmdArea);
@@ -85,6 +92,11 @@ public class ProfileAdapter extends BaseAdapter {
 //                Intent intent = new Intent(v.getContext(),Layout3Fragment.class);
 //                intent.putExtra("index",dataset.get(position).getName());
 //                v.getContext().startActivity(intent);
+
+                Intent intent = new Intent(v.getContext(),ProfileUrl.class);
+                intent.putExtra("name",currentName);
+                v.getContext().startActivity(intent);
+
             }
         });
         
@@ -129,8 +141,8 @@ public class ProfileAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void addItem(int icon, String name){
-        Profile profile = new Profile(icon,name);
+    public void addItem(String profileUrl, String name){
+        Profile profile = new Profile(profileUrl,name);
         this.notifyDataSetChanged();
         dataset.add(profile);
     }

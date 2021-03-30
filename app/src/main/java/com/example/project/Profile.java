@@ -1,22 +1,23 @@
 package com.example.project;
+
 // 전체친구 클릭시 보여질 프로필 사진과 이름
 public class Profile {
-    int icon;
+    String profileUrl;
     String name;
 
-    public Profile(int icon, String name) {
-        this.icon = icon;
+    public Profile(String profileUrl, String name) {
+        this.profileUrl = profileUrl;
         this.name = name;
     }
 
     public Profile(){}
 
-    public int getIcon() {
-        return icon;
+    public String getProfileUrl() {
+        return profileUrl;
     }
 
-    public void setIcon(int icon) {
-        this.icon = icon;
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 
     public String getName() {
