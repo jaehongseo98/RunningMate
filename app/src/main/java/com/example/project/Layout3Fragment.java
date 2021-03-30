@@ -143,7 +143,7 @@ Layout3Fragment extends Fragment{
 //                    }
                     String key = snapshot2.getKey();
                     ChatData get = snapshot2.getValue(ChatData.class);
-                    String name = get.getNickname();
+                    String name = get.getName();
                     String msg = get.getMsg();
                     chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, key, name);
                     chatAdapter.notifyDataSetChanged();

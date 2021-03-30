@@ -2,8 +2,17 @@ package com.example.project;
 
 public class ChatData {
 
+    private String name;
     private String msg;
-    private String nickname;
+    String time;
+    String profileUrl;
+
+    public ChatData(String name, String msg, String time, String profileUrl) {
+        this.name = name;
+        this.msg = msg;
+        this.time = time;
+        this.profileUrl = profileUrl;
+    }
 
     public ChatData(){}
 
@@ -15,11 +24,27 @@ public class ChatData {
         this.msg = msg;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getName() {
+        return name;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 }
