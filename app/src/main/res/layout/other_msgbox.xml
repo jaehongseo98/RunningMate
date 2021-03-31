@@ -6,9 +6,11 @@
 
     <ImageView
         android:id="@+id/iv"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@mipmap/ic_launcher"
+        android:scaleType="fitCenter"
+        android:background="@drawable/back_profile"
         />
     <TextView
         android:id="@+id/tv_name"

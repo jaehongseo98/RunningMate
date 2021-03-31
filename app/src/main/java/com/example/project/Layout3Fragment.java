@@ -59,6 +59,7 @@ Layout3Fragment extends Fragment{
     FirebaseUser firebaseUser;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
+    ArrayList<Profile> list;
 
     @Nullable
     @Override
@@ -100,18 +101,26 @@ Layout3Fragment extends Fragment{
 //        }
         /////////////////
         // 2-1 친구 목록
+        //final int[] i = {0};
+        list = new ArrayList<>();
         Query allFQuery = databaseReference.child("Users");//.orderByChild("uid");
 
         allFQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
                 for(DataSnapshot snapshot1 : snapshot.getChildren()){
+                    //profileAdapter.isEnabled(i[0]);
+                    //Log.i("i의 카운트", String.valueOf(i[0]));
+                    //i[0]++;
                     String key = snapshot1.getKey();
                     Log.i("key", key);
                     Profile get = snapshot1.getValue(Profile.class);
-                    String name = get.name;
-                    String profileUrl = get.profileUrl;
-                    profileAdapter.addItem(profileUrl,name);
+                    //String name = get.name;
+                    //String profileUrl = get.profileUrl;
+                    list.add(get);
+                    //profileAdapter.addItem(profileUrl,name);
+                    profileAdapter.addItem(list);
                     profileAdapter.notifyDataSetChanged();
                 }
             }

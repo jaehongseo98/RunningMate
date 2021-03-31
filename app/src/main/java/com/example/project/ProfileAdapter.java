@@ -147,6 +147,10 @@ public class ProfileAdapter extends BaseAdapter {
         dataset.add(profile);
     }
 
+    public void addItem(ArrayList<Profile> list) {
+        this.dataset = list;
+    }
+
 //    public void deleteItem(int position){
 //        String name = dataset.get(position).getName();
 //        int icon = dataset.get(position).getIcon();
