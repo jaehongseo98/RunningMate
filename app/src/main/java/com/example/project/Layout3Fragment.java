@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -58,6 +59,7 @@ Layout3Fragment extends Fragment{
     FirebaseUser firebaseUser;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
+    ArrayList<Profile> list;
 
     @Nullable
     @Override
@@ -99,17 +101,26 @@ Layout3Fragment extends Fragment{
 //        }
         /////////////////
         // 2-1 친구 목록
-        Query allFQuery = databaseReference.child("Users").orderByChild("uid");
+        //final int[] i = {0};
+        list = new ArrayList<>();
+        Query allFQuery = databaseReference.child("Users");//.orderByChild("uid");
 
         allFQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
                 for(DataSnapshot snapshot1 : snapshot.getChildren()){
+                    //profileAdapter.isEnabled(i[0]);
+                    //Log.i("i의 카운트", String.valueOf(i[0]));
+                    //i[0]++;
                     String key = snapshot1.getKey();
-                    //Log.i("key", key);
+                    Log.i("key", key);
                     Profile get = snapshot1.getValue(Profile.class);
-                    String name = get.name;
-                    profileAdapter.addItem(R.drawable.ic_baseline_account_circle_24,name);
+                    //String name = get.name;
+                    //String profileUrl = get.profileUrl;
+                    list.add(get);
+                    //profileAdapter.addItem(profileUrl,name);
+                    profileAdapter.addItem(list);
                     profileAdapter.notifyDataSetChanged();
                 }
             }
@@ -141,7 +152,7 @@ Layout3Fragment extends Fragment{
 //                    }
                     String key = snapshot2.getKey();
                     ChatData get = snapshot2.getValue(ChatData.class);
-                    String name = get.getNickname();
+                    String name = get.getName();
                     String msg = get.getMsg();
                     chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, key, name);
                     chatAdapter.notifyDataSetChanged();
@@ -177,7 +188,6 @@ Layout3Fragment extends Fragment{
         lvBoard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), position +"번째 클릭함", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(),ChatActivity.class);
 //                intent.putExtra("list name",list.get(position).name);
 //                intent.putExtra("list message", list.get(position).message);
