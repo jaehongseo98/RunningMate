@@ -63,7 +63,7 @@ public class PWinsertActivity extends AppCompatActivity {
                             //reference.child("Users").child(key).child()
                             Profile profile1 = snapshot1.getValue(Profile.class);
                             if(profile1.getName().equals(user.getDisplayName())){
-                                String pw = snapshot1.getValue();
+                                //String pw = snapshot1.getValue();
                                 Log.e("pw",pw);
                                 String key = snapshot1.getKey();
                                 Log.e("ss",key);
