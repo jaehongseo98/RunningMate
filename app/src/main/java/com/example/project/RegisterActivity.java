@@ -66,6 +66,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         //파이어베이스 user 로 접근
 
+
+
         //가입버튼 클릭리스너   -->  firebase에 데이터를 저장한다.
         btnRegister.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -92,6 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 String email = user.getEmail();
                                 String uid = user.getUid();
                                 String name = edtInputName.getText().toString().trim();
+                                String pwd = edtInputPW.getText().toString().trim();
 
                                 // 프로필 수정하기(displayName을 사용하기 위해)
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -115,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 hashMap.put("email",email);
                                 hashMap.put("name",name);
                                 hashMap.put("displayName",displayName);
+                                hashMap.put("pw", pwd);
 
                                 // db접근 권한
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();

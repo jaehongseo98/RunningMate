@@ -76,7 +76,7 @@ public class ChatDataAdapter extends RecyclerView.Adapter<ChatDataAdapter.MyView
     public ChatDataAdapter(List<ChatData> myDataset, Context context, String myNickname){
         mDataset = myDataset;
         this.myNickname = myNickname;
-        Log.i("myNickname", myNickname);
+       // Log.i("myNickname", myNickname);
     }
 
     public void addChat(ChatData chat){

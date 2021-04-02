@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.bumptech.glide.Glide;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -78,7 +78,7 @@ Layout3Fragment extends Fragment{
 
         // 1.현재 로그인한 사용자를 가져옴
         firebaseUser = firebaseAuth.getInstance().getCurrentUser();
-        Log.i("userdisplayname" ,firebaseUser.getDisplayName());
+        //Log.i("userdisplayname" ,firebaseUser.getDisplayName());
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();

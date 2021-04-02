@@ -17,9 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 // bottomNavigation 에서 매칭된 네번째 fragment
-public class Layout4Fragment extends Fragment {
+public class Layout4Fragment extends Fragment implements View.OnClickListener{
     FirebaseAuth auth;
-    FirebaseUser user1;
+    FirebaseUser userof;
     TextView user;
     Button updateuser, logout;
     CalendarView calendar;
@@ -34,9 +34,9 @@ public class Layout4Fragment extends Fragment {
         logout = (Button)root.findViewById(R.id.logout);
         calendar = (CalendarView)root.findViewById(R.id.calendar);
         auth = FirebaseAuth.getInstance();
-        user1 = auth.getCurrentUser();
+        userof = auth.getCurrentUser();
 
-        String username = user1.getDisplayName();
+        String username = userof.getDisplayName();
         user.setText(username+"님 환영합니다");
 
         updateuser.setOnClickListener(new View.OnClickListener() {
@@ -58,10 +58,17 @@ public class Layout4Fragment extends Fragment {
             }
         });
 
+        logout.setOnClickListener(this);
+
+
         return root;
     }
 
-    public void logout(View view){
-        auth.signOut();
+    @Override
+    public void onClick(View v) {
+        if (v == logout) {
+            auth.signOut();
+            startActivity(new Intent(getActivity(), MainActivity.class));
+        }
     }
 }

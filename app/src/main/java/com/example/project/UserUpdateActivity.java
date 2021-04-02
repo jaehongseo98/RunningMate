@@ -14,22 +14,35 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class UserUpdateActivity extends AppCompatActivity {
 
-    Button updatepw, btnjuso;
+    Button updatepw, btnjuso, btnexit;
     private WebView webView;
     private TextView txt_address;
     private Handler handler;
     private WebSettings webSettings;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_update);
 
+
         txt_address = (TextView)findViewById(R.id.txt_address);
         updatepw = (Button)findViewById(R.id.updatepw);
         btnjuso = (Button)findViewById(R.id.btnjuso);
+        btnexit = (Button)findViewById(R.id.btn_exit);
+
+//        btnexit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                revokeAccess();
+//                finishAffinity();
+//            }
+//        });
 
 
         btnjuso.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +66,10 @@ public class UserUpdateActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void revokeAccess() {
+        auth.getCurrentUser().delete();
     }
 
     public void init_webView() {

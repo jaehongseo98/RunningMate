@@ -17,6 +17,7 @@
         android:id="@+id/user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="000님 안녕하세요"
         android:layout_margin="15dp"
         android:textSize="30sp" />
@@ -51,7 +52,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:onClick="logout"
             android:background="#B3B2B2"
             android:textColor="#FFFFFF"
             android:text="로그아웃"
