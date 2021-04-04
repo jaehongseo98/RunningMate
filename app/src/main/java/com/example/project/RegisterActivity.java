@@ -92,6 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 String email = user.getEmail();
                                 String uid = user.getUid();
                                 String name = edtInputName.getText().toString().trim();
+                                String pw = edtInputPW.getText().toString().trim();
 
                                 // 프로필 수정하기(displayName을 사용하기 위해)
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -115,6 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 hashMap.put("email",email);
                                 hashMap.put("name",name);
                                 hashMap.put("displayName",displayName);
+                                hashMap.put("pw",pw);
                                 hashMap.put("ProfileUrl","");
 
                                 // db접근 권한
