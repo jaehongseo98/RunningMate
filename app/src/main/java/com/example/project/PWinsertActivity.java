@@ -35,7 +35,6 @@ public class PWinsertActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference reference;
     private List<String> uidlist = new ArrayList<>();
-    String pwok;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +49,7 @@ public class PWinsertActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
 
+
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,26 +59,20 @@ public class PWinsertActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                            String key = snapshot1.getKey();
+                            if(user.getUid().equals(key)){
+                                UserInfo getPw = snapshot1.getValue(UserInfo.class);
+                                String dbgetpw = getPw.pw;
 
-                            //reference.child("Users").child(key).child()
-                            Profile profile1 = snapshot1.getValue(Profile.class);
-                            if(profile1.getName().equals(user.getDisplayName())){
-                                //String pw = snapshot1.getValue();
-                                Log.e("pw",pw);
-                                String key = snapshot1.getKey();
-                                Log.e("ss",key);
+                                if(dbgetpw.equals(pw)){
+                                    Intent intent = new Intent(PWinsertActivity.this, UserUpdateActivity.class);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getApplicationContext(),"pw 오류 다시 입력 바랍니다",Toast.LENGTH_SHORT).show();
+                                    Log.i("실패","비밀번호 다시 입력");
+                                }
                             }
-
-
-
-//                            if (profile1.getPw().equals(pw)) {// Users 밑의 자식들중 value 값중 현재 위치의 이름값과 같다면
-//                                Intent intent = new Intent(PWinsertActivity.this, UserUpdateActivity.class);
-//                                startActivity(intent);
-//                            } else {
-//                                Log.i("snapshot error", "snapshot error");
-//                            }
                         }
-
                     }
 
                     @Override
