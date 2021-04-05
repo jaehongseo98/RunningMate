@@ -3,6 +3,8 @@ package com.example.project;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +48,10 @@ public class ProfileUrl extends AppCompatActivity {
 
     Profile profile;
     String name = "";
+
+    FragmentTransaction fragmentTransaction;
+    FragmentManager fragmentManager;
+    Layout3Fragment layout3Fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +109,12 @@ public class ProfileUrl extends AppCompatActivity {
     public void clickBtn(View view) {
         //바꾼것도 없고, 처음 접속도 아니고..
         if(!isChanged && !isFirst){
-            Intent intent= new Intent(this, ChatActivity.class);
-            startActivity(intent);
+//            fragmentManager = getSupportFragmentManager();
+//            fragmentTransaction = fragmentManager.beginTransaction();
+//            layout3Fragment = new Layout3Fragment();
+//            fragmentTransaction.replace(R.id.relFragmentBox,layout3Fragment);
+//            Intent intent= new Intent(this, Layout3Fragment.class);
+//            startActivity(intent);
             finish();
         }else{
             saveData();
@@ -188,8 +198,12 @@ public class ProfileUrl extends AppCompatActivity {
 
                         editor.commit();
                         //저장이 완료
-                        Intent intent=new Intent(getApplicationContext(), ChatActivity.class);
-                        startActivity(intent);
+//                        fragmentManager = getSupportFragmentManager();
+//                        fragmentTransaction = fragmentManager.beginTransaction();
+//                        layout3Fragment = new Layout3Fragment();
+//                        fragmentTransaction.replace(R.id.relFragmentBox,layout3Fragment);
+//                        Intent intent=new Intent(getApplicationContext(), Layout3Fragment.class);
+//                        startActivity(intent);
                         finish();
                     }
                 });
