@@ -119,6 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 hashMap.put("pw",pw);
                                 hashMap.put("ProfileUrl","");
 
+
                                 // db접근 권한
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 // db에 Users 인스턴스 가짐
