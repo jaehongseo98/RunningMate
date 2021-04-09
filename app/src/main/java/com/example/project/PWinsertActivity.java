@@ -55,7 +55,7 @@ public class PWinsertActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String pw = pwline.getText().toString().trim();
 
-                reference.child("Users").addValueEventListener(new ValueEventListener() {
+                reference.child("Users").addValueEventListener(new ValueEventListener() {  //Real DB  값 꺼내오기
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot snapshot1 : snapshot.getChildren()) {

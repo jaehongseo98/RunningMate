@@ -35,14 +35,19 @@
                 android:text="현재 비밀번호"
                 />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName"
+            <com.google.android.material.textfield.TextInputLayout
+                app:passwordToggleEnabled="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                android:id="@+id/edtcupw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name"
+                android:inputType="textPassword"
                 android:layout_weight="1"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,14 +62,20 @@
                 android:layout_weight="1"
                 android:text="새 비밀번호" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                app:passwordToggleEnabled="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
-                android:id="@+id/editTextTextPersonName2"
+                android:id="@+id/edtafpw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:inputType="textPassword"
+                />
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,14 +90,20 @@
                 android:layout_weight="1"
                 android:text="새 비밀번호 확인" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                app:passwordToggleEnabled="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
-                android:id="@+id/editTextTextPersonName3"
+                android:id="@+id/edtafrepw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:inputType="textPassword"
+                 />
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
     </LinearLayout>
 

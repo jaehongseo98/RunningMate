@@ -16,6 +16,10 @@ public class UserInfo {
     public String address;
 
 
+    public UserInfo(String pw) {
+        this.pw = pw;
+    }
+
     public UserInfo(){
         // Default constructor required for calls to DataSnapshot.getValue(FirebasePost.class)
     }
