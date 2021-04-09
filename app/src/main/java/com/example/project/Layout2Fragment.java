@@ -147,14 +147,21 @@ public class Layout2Fragment extends Fragment {
 
             firebaseUser = firebaseAuth.getInstance().getCurrentUser();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference reference = database.getReference("GPS");
-            HashMap<Object,String> hashMap = new HashMap<>();
-            reference.addValueEventListener(new ValueEventListener() {
+            databaseReference = database.getReference("Users");
+            databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    hashMap.put("logitude", String.valueOf(longitude));
-                    hashMap.put("latitude", String.valueOf(latitude));
-                    reference.child(firebaseUser.getUid()).setValue(hashMap);
+                    for(DataSnapshot snapshot1 : snapshot.getChildren()){
+                        Profile profile = snapshot1.getValue(Profile.class);
+                        if(profile.getName().equals(firebaseUser.getDisplayName())){ //profile = DB에서 가져 온 이름, firebaseUser = 현재 앱 사용자
+                            String key = snapshot1.getKey();
+                            DatabaseReference hopperRef = databaseReference.child(key);
+                            Map<String, Object> hopperUpdates = new HashMap<>();
+                            hopperUpdates.put("longitude", longitude);
+                            hopperUpdates.put("latitude", latitude);
+                            hopperRef.updateChildren(hopperUpdates);
+                        }
+                    }
                 }
 
                 @Override
