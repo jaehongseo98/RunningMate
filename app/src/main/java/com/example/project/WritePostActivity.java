@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +26,9 @@ public class WritePostActivity extends BasicActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_write_post);
 
-            findViewById(R.id.btnOk).setOnClickListener(onClickListener);
+            findViewById(R.id.btnWrite).setOnClickListener(onClickListener);
+            findViewById(R.id.btnImg).setOnClickListener(onClickListener);
+            findViewById(R.id.btnVideo).setOnClickListener(onClickListener);
 
         }
 
@@ -33,9 +36,15 @@ public class WritePostActivity extends BasicActivity {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.btnOk:
+                    case R.id.btnWrite:
                         Update();
                         break;
+//                    case R.id.btnImg:
+//                        myStartActivity(GalleryActivity.class, "image");
+//                        break;
+//                    case R.id.btnVideo:
+//                        myStartActivity(GalleryActivity.class, "video");
+//                        break;
                 }
             }
         };
@@ -71,6 +80,11 @@ public class WritePostActivity extends BasicActivity {
         }
 
         private void startToast(String s) {
-            Toast.makeText(this, "..",Toast.LENGTH_SHORT).show();
-        }
+            Toast.makeText(this, "..", Toast.LENGTH_SHORT).show(); }
+
+    private void myStartActivity(Class c, String media) {
+        Intent intent = new Intent(this,c);
+        intent.putExtra("media", media);
+        startActivityForResult(intent, 0);
     }
+}
