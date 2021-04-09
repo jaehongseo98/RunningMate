@@ -5,6 +5,25 @@ public class Profile {
     String profileUrl;
     String name;
 
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    double longitude;
+    double latitude;
+
     public Profile(String profileUrl, String name) {
         this.profileUrl = profileUrl;
         this.name = name;
@@ -28,5 +47,7 @@ public class Profile {
     public void setName(String name) {
         this.name = name;
     }
+
+
 
 }

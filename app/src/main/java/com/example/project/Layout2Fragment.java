@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,17 +45,22 @@ public class Layout2Fragment extends Fragment {
     LinearLayout linearLayoutTmap;
     TMapView tMapView;
     TMapMarkerItem markerItem1;
+    TMapMarkerItem markerItem2;
     String provider;
     double longitude;
     double latitude;
     double altitude;
+    double otherlongitude;
+    double otherlatitude;
     LocationManager lm;
     Bitmap bitmap;
     TMapPoint tMapPoint1;
+    TMapPoint tMapPoint2;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+
 
     @Nullable
     @Override
@@ -63,6 +69,7 @@ public class Layout2Fragment extends Fragment {
         btnGps = (Button) root.findViewById(R.id.btn_Gps);
         tvGps = (TextView) root.findViewById(R.id.tv_Gps);
         markerItem1 = new TMapMarkerItem(); //지도에 마커 설정
+        markerItem2 = new TMapMarkerItem(); //지도에 마커 설정
         linearLayoutTmap = (LinearLayout) root.findViewById(R.id.linearLayoutTmap);
         tMapView = new TMapView(root.getContext());
 
@@ -110,7 +117,6 @@ public class Layout2Fragment extends Fragment {
                     tMapView.addMarkerItem("내 위치", markerItem1); //맵에 마커 표시
 
 
-
                     lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1,gpsLocationListener);
                     lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000,1,gpsLocationListener);
 
@@ -154,13 +160,15 @@ public class Layout2Fragment extends Fragment {
                     for(DataSnapshot snapshot1 : snapshot.getChildren()){
                         Profile profile = snapshot1.getValue(Profile.class);
                         if(profile.getName().equals(firebaseUser.getDisplayName())){ //profile = DB에서 가져 온 이름, firebaseUser = 현재 앱 사용자
-                            String key = snapshot1.getKey();
+                            String key = snapshot1.getKey(); //현재 profile에 저장된 UID 값
                             DatabaseReference hopperRef = databaseReference.child(key);
                             Map<String, Object> hopperUpdates = new HashMap<>();
                             hopperUpdates.put("longitude", longitude);
                             hopperUpdates.put("latitude", latitude);
                             hopperRef.updateChildren(hopperUpdates);
                         }
+
+
                     }
                 }
 
@@ -170,8 +178,33 @@ public class Layout2Fragment extends Fragment {
                 }
             });
 
+            databaseReference = database.getReference("Users");
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot snapshot1 : snapshot.getChildren()){
+                        Profile profile = snapshot1.getValue(Profile.class);
 
+                        otherlongitude = profile.getLongitude();
+                        otherlatitude = profile.getLatitude();
 
+                        bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.border);
+                        tMapPoint2 = new TMapPoint(otherlatitude,otherlongitude);//내 위치 포인트 지정
+                        Log.i("여기",String.valueOf(otherlongitude));
+                        Log.i("여기",String.valueOf(otherlatitude));
+                        markerItem2.setTMapPoint(tMapPoint2); //마커에 Point 지정
+                        markerItem2.setVisible(TMapMarkerItem.VISIBLE); //마커의 VISIBLE 설정
+                        markerItem2.setIcon(bitmap); //마커의 이미지 설정
+                        tMapView.addMarkerItem("다른 사용자 위치", markerItem2); //맵에 마커 표시
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
 
         }
 
