@@ -1,5 +1,7 @@
 package com.example.project;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -42,6 +45,7 @@ import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 // bottomNavigation 에서 매칭된 세번째 fragment
 public class
@@ -60,6 +64,8 @@ Layout3Fragment extends Fragment{
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     ArrayList<Profile> list;
+    ArrayList<Chat> list2;
+    int roomCnt = -1;
 
     @Nullable
     @Override
@@ -90,6 +96,9 @@ Layout3Fragment extends Fragment{
 
         ImageView imageView = root.findViewById(R.id.imageView);
         //Glide.with(getContext()).
+
+
+
 
         /////////////////
 //        int bundle = getArguments().getInt("index");
@@ -133,7 +142,28 @@ Layout3Fragment extends Fragment{
         btnPlusChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, "test", "sample view");
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//                //builder.setTitle("비밀번호 입력");
+//                builder.setMessage("방 비밀번호를 입력해주세요. ");
+//                EditText roomPw = new EditText(getContext());
+//                builder.setView(roomPw);
+//                builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        String input = roomPw.getText().toString();
+//                        Toast.makeText(getActivity(), input, Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(getActivity(), "취소를 누름", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                AlertDialog dialog = builder.create();
+//                dialog.show();
+                roomCnt+=1;
+                chatAdapter.addItem(R.drawable.ic_baseline_message_24, "Room"+roomCnt, "");
             }
         });
 
@@ -141,20 +171,26 @@ Layout3Fragment extends Fragment{
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
 
-        Query chatQuery = databaseReference.child("Chat").orderByChild("nickname");
+        list2 = new ArrayList<>();
+        Query chatQuery = databaseReference.child("chat").orderByChild("nickname");
 
         chatQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list2.clear();
+                roomCnt = -1;
                 for(DataSnapshot snapshot2 : snapshot.getChildren()){
-//                    if(snapshot.getChildrenCount() == 0){
-//                        btnPlusChat.setVisibility(View.VISIBLE);
-//                    }
                     String key = snapshot2.getKey();
-                    ChatData get = snapshot2.getValue(ChatData.class);
+                    Chat get = snapshot2.getValue(Chat.class);
+                    ChatData get2 = snapshot2.getValue(ChatData.class);
+                    //list2.add(key);
                     String name = get.getName();
                     String msg = get.getMsg();
-                    chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24, key, name);
+                    list2.add(get);
+                    //chatAdapter.addItem(list2);
+                    chatAdapter.addItem(R.drawable.ic_baseline_message_24, key, msg);
+                    roomCnt++;
+                    //chatAdapter.addItem(R.drawable.ic_baseline_account_circle_24,list2);
                     chatAdapter.notifyDataSetChanged();
                 }
             }

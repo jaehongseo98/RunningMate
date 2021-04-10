@@ -55,14 +55,22 @@ public class ChatAdapter extends BaseAdapter {
 
         ivChatIcon.setImageResource(chat.getIcon());
         tvChatName.setText(chat.getName());
-        tvChatMessage.setText(chat.getMessage());
+        tvChatMessage.setText(chat.getMsg());
 
         return convertView;
     }
 
-    public void addItem(int icon, String name, String message){
-        Chat chat= new Chat(icon,name,message);
+    public void addItem(int icon, String name, String msg){
+        Chat chat= new Chat(icon,name,msg);
         this.notifyDataSetChanged();
         dataset.add(chat);
+    }
+
+    public void addItem(int ic_baseline_account_circle_24, ArrayList<Chat> list2) {
+        this.dataset = list2;
+    }
+
+    public void addItem(ArrayList<Chat> list) {
+        this.dataset = list;
     }
 }

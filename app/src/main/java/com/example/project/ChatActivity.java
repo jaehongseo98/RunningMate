@@ -144,6 +144,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -183,6 +184,7 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser = firebaseAuth.getInstance().getCurrentUser();
     static String profileUrl = "";
+    ArrayList<ChatData> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +203,12 @@ public class ChatActivity extends AppCompatActivity {
         firebaseDatabase= FirebaseDatabase.getInstance();
         chatRef= firebaseDatabase.getReference("chat");
 
+        Intent intent = getIntent();
+        int index = intent.getIntExtra("index",0);
+        Log.i("index값 넘어옴", String.valueOf(index));
+
+        firebaseDatabase = FirebaseDatabase.getInstance();// 선언과 생성
+        chatRef = firebaseDatabase.getReference("chat").child("Room"+index);// 해당 db를 참조
 
         //firebaseDB에서 채팅 메세지들 실시간 읽어오기..
         //'chat'노드에 저장되어 있는 데이터들을 읽어오기
@@ -209,6 +217,7 @@ public class ChatActivity extends AppCompatActivity {
             //새로 추가된 것만 줌 ValueListener는 하나의 값만 바뀌어도 처음부터 다시 값을 줌
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //messageItems.clear();
 
                 //새로 추가된 데이터(값 : ChatData객체) 가져오기
                 ChatData messageItem= dataSnapshot.getValue(ChatData.class);
@@ -268,36 +277,45 @@ public class ChatActivity extends AppCompatActivity {
 //
 //            }
 //        };
+        // 채팅에 대한 문제 
+        // 1번 : 앱 실행 시 프로필 사진 등록 후 채팅창 이용가능(미등록시 NPE)
         String cuname = firebaseUser.getDisplayName();
-        databaseReference.child("Users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot1 : snapshot.getChildren()){
-                    //Log.i("chatData2",snapshot1.getKey());// Users바로 밑에 있는 uid값을 가져옴
-                    ChatData chatData = snapshot1.getValue(ChatData.class);
-                    String name = chatData.getName();
-                    Log.i("name", name); //사용자 이름 가져옴
-
-                    if(name.equals(cuname)){
-                        profileUrl = chatData.getProfileUrl();
-                        Log.i("profileUrl123123",profileUrl);
-                        ChatData messageItem= new ChatData(cuname,message,time,profileUrl);
-                        chatRef.push().setValue(messageItem);
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        //firebase DB에 저장할 값(MessageItem객체) 설정
-//        ChatData messageItem= new ChatData(cuname,message,time,profileUrl);
-//        //'chat'노드에 MessageItem객체를 통해
-//        chatRef.push().setValue(messageItem);
+        profileUrl = G.profileUrl;
+        Log.i("profileUrl123123",profileUrl);
+        ChatData messageItem= new ChatData(cuname,message,time,profileUrl);
+        chatRef.push().setValue(messageItem);
+        // 1번 끝
+        // 2번 : 1번 문제는 해결 되지만 db값이 변경 될 때마다 채팅창 심각한 오류
+//        String cuname = firebaseUser.getDisplayName();
+//        //list = new ArrayList<>();
+//        databaseReference.child("Users").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                //list.clear();
+//                for (DataSnapshot snapshot1 : snapshot.getChildren()){
+//                    Log.i("chatData2",snapshot1.getKey());// Users바로 밑에 있는 uid값을 가져옴
+//                    ChatData chatData = snapshot1.getValue(ChatData.class);
+//                    String name = chatData.getName();
+//                    Log.i("name", name); //사용자 이름 가져옴
+//
+//                    if(name.equals(cuname)){
+//                        profileUrl = chatData.getProfileUrl();
+//                        Log.i("profileUrl123123",profileUrl);
+//                        ChatData messageItem= new ChatData(cuname,message,time,profileUrl);
+//                        //list.add(messageItem);
+//                        //chatRef.push().setValue(list);
+//                        chatRef.push().setValue(messageItem);
+//                    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+        // 2번 끝
 
         //EditText에 있는 글씨 지우기
         et.setText("");

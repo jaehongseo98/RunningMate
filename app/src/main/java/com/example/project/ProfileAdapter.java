@@ -32,6 +32,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 // 3번째 fragment에 붙일 adpater(프로필과 이름)
 public class ProfileAdapter extends BaseAdapter {
 
@@ -106,6 +109,12 @@ public class ProfileAdapter extends BaseAdapter {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                fireUser.updatePassword("changePw").continueWith(task -> {
+                    if(task.isSuccessful()){
+                        Toast.makeText(v.getContext(), "변경 됨", Toast.LENGTH_SHORT).show();
+                    }
+                    return null;
+                });
                 databaseReference.child("Users").addValueEventListener(new ValueEventListener() {//Users 밑에 있는 자식들의 이벤트 메서드
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -113,6 +122,12 @@ public class ProfileAdapter extends BaseAdapter {
                             Profile profile1 = snapshot1.getValue(Profile.class);
                             if(profile1.getName().equals(name)){// Users 밑의 자식들중 value 값중 현재 위치의 이름값과 같다면
                                 String key = snapshot1.getKey();// 해당하는 key값을 가져와
+
+//                                DatabaseReference hopperRef = databaseReference.child("Users").child(key);
+//                                Map<String, Object> hopperUpdates = new HashMap<>();
+//                                hopperUpdates.put("pw", "changePw");
+//
+//                                hopperRef.updateChildren(hopperUpdates);
                                 databaseReference.child("Users").child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {// 삭제이벤트 실행
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {

@@ -1,17 +1,25 @@
 package com.example.project;
+
+import java.util.ArrayList;
+
 // 채팅 클릭시 보여질 프로필 사진과 이름과 대화내역
 public class Chat {
 
     int icon;
     String name;
-    String message;
+    String msg;
+
+    public Chat(String name, String msg) {
+        this.name = name;
+        this.msg = msg;
+    }
 
     public Chat(){}
 
-    public Chat(int icon, String name, String message) {
+    public Chat(int icon, String name, String msg) {
         this.icon = icon;
         this.name = name;
-        this.message = message;
+        this.msg = msg;
     }
 
     public int getIcon() {
@@ -30,11 +38,11 @@ public class Chat {
         this.name = name;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }
