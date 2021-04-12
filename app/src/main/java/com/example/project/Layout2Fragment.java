@@ -192,7 +192,7 @@ public class Layout2Fragment extends Fragment {
 
 
                         alTMapPoint.add(new TMapPoint(otherlatitude,otherlongitude));
-                        Log.i("요기", String.valueOf(alTMapPoint));
+
 
                         for(int i=0; i<alTMapPoint.size(); i++){
                             TMapMarkerItem markerItem1 = new TMapMarkerItem();
@@ -204,7 +204,9 @@ public class Layout2Fragment extends Fragment {
                             tMapView.addMarkerItem("markerItem"+i, markerItem1);
 
                         }
+
                     }
+                    alTMapPoint.clear();
                 }
 
                 @Override
