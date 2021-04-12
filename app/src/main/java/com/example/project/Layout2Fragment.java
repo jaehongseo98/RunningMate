@@ -34,6 +34,7 @@ import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class Layout2Fragment extends Fragment {
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-
+    ArrayList alTMapPoint = new ArrayList();
 
     @Nullable
     @Override
@@ -106,7 +107,7 @@ public class Layout2Fragment extends Fragment {
                             "경도 : " + latitude + "\n"
                             );
 
-                    tMapView.setCenterPoint(longitude, latitude);
+
 
                     bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.border);
                     tMapPoint1 = new TMapPoint(latitude, longitude);//내 위치 포인트 지정
@@ -115,6 +116,7 @@ public class Layout2Fragment extends Fragment {
                     markerItem1.setIcon(bitmap); //마커의 이미지 설정
                     tMapView.setCenterPoint(longitude, latitude); //맵의 중심이 마커로 이동
                     tMapView.addMarkerItem("내 위치", markerItem1); //맵에 마커 표시
+
 
 
                     lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1,gpsLocationListener);
@@ -188,15 +190,20 @@ public class Layout2Fragment extends Fragment {
                         otherlongitude = profile.getLongitude();
                         otherlatitude = profile.getLatitude();
 
-                        bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.border);
-                        tMapPoint2 = new TMapPoint(otherlatitude,otherlongitude);//내 위치 포인트 지정
-                        Log.i("여기",String.valueOf(otherlongitude));
-                        Log.i("여기",String.valueOf(otherlatitude));
-                        markerItem2.setTMapPoint(tMapPoint2); //마커에 Point 지정
-                        markerItem2.setVisible(TMapMarkerItem.VISIBLE); //마커의 VISIBLE 설정
-                        markerItem2.setIcon(bitmap); //마커의 이미지 설정
-                        tMapView.addMarkerItem("다른 사용자 위치", markerItem2); //맵에 마커 표시
 
+                        alTMapPoint.add(new TMapPoint(otherlatitude,otherlongitude));
+                        Log.i("요기", String.valueOf(alTMapPoint));
+
+                        for(int i=0; i<alTMapPoint.size(); i++){
+                            TMapMarkerItem markerItem1 = new TMapMarkerItem();
+                            // 마커 아이콘 지정
+                            markerItem1.setIcon(bitmap);
+                            // 마커의 좌표 지정
+                            markerItem1.setTMapPoint((TMapPoint) alTMapPoint.get(i));
+                            //지도에 마커 추가
+                            tMapView.addMarkerItem("markerItem"+i, markerItem1);
+
+                        }
                     }
                 }
 
@@ -205,6 +212,8 @@ public class Layout2Fragment extends Fragment {
 
                 }
             });
+
+
 
         }
 
@@ -219,6 +228,23 @@ public class Layout2Fragment extends Fragment {
     };
 
 
+    /* final ArrayList alTMapPoint = new ArrayList();
+    alTMapPoint.add(new TMapPoint(37.576016, 126.976867));//광화문
+    alTMapPoint.add(new TMapPoint(37.570432, 126.992169));//종로3가
+    alTMapPoint.add(new TMapPoint(37.570194, 126.983045));//종로5가
+
+    final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pin_r_m_a);
+
+    for(int i=0; i<alTMapPoint.size(); i++){
+        TMapMarkerItem markerItem1 = new TMapMarkerItem();
+        // 마커 아이콘 지정
+        markerItem1.setIcon(bitmap);
+        // 마커의 좌표 지정
+        markerItem1.setTMapPoint(alTMapPoint.get(i));
+        //지도에 마커 추가
+        tmap.addMarkerItem("markerItem"+i, markerItem1);
+
+    }*/
 }
 
 
