@@ -1,14 +1,20 @@
 package com.example.project;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +35,31 @@ public class WritePostActivity extends BasicActivity {
             findViewById(R.id.btnWrite).setOnClickListener(onClickListener);
             findViewById(R.id.btnImg).setOnClickListener(onClickListener);
             findViewById(R.id.btnVideo).setOnClickListener(onClickListener);
+        }
 
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            switch (requestCode){
+                case 0: {
+                    if (resultCode == Activity.RESULT_OK) {
+                        String profilePath = data.getStringExtra("profilePath");
+
+                        LinearLayout parent = findViewById(R.id.contentsLayout);
+                        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                        ImageView imageView = new ImageView(WritePostActivity.this);
+                        imageView.setLayoutParams(layoutParams);
+                        Glide.with(this).load(profilePath).override(1000).into(imageView);
+                        parent.addView(imageView);
+
+                        EditText editText = new EditText(WritePostActivity.this);
+                        editText.setLayoutParams(layoutParams);
+                        editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
+                    }
+                    break;
+                }
+            }
         }
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -39,12 +69,12 @@ public class WritePostActivity extends BasicActivity {
                     case R.id.btnWrite:
                         Update();
                         break;
-//                    case R.id.btnImg:
-//                        myStartActivity(GalleryActivity.class, "image");
-//                        break;
-//                    case R.id.btnVideo:
-//                        myStartActivity(GalleryActivity.class, "video");
-//                        break;
+                    case R.id.btnImg:
+                        myStartActivity(GalleryActivity.class, "image");
+                        break;
+                    case R.id.btnVideo:
+                        myStartActivity(GalleryActivity.class, "video");
+                        break;
                 }
             }
         };
@@ -80,8 +110,10 @@ public class WritePostActivity extends BasicActivity {
         }
 
         private void startToast(String s) {
-            Toast.makeText(this, "..", Toast.LENGTH_SHORT).show(); }
+            Toast.makeText(this, "..", Toast.LENGTH_SHORT).show();
+        }
 
+    //GalleryActivity에 보냄
     private void myStartActivity(Class c, String media) {
         Intent intent = new Intent(this,c);
         intent.putExtra("media", media);

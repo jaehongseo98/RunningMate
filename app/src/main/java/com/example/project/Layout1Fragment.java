@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +26,14 @@ public class Layout1Fragment extends Fragment {
 
         WriteBtn = (FloatingActionButton) root.findViewById(R.id.btnWrite);
 
+        WriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(root.getContext(), WritePostActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return root;
-
-
-
     }
 }
