@@ -20,6 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project"
         android:usesCleartextTraffic="true">
+        <activity android:name=".DaumjusoActivity"></activity>
         <activity android:name=".ProfileUrl" />
         <activity android:name=".DBPWUPActivity" />
         <activity android:name=".UserUpdateActivity" />
