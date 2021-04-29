@@ -36,7 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:hint="PASSWORD"
+                android:inputType="textPassword"
                 android:layout_marginTop="15dp"
                 />
         </com.google.android.material.textfield.TextInputLayout>
