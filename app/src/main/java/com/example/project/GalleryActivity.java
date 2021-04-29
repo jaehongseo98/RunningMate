@@ -38,12 +38,15 @@ public class GalleryActivity extends BasicActivity{
         Cursor cursor;
         int column_index_data;
         String PathOfImage = null;
-        String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
+        String[] projection;
 
         Intent intent = getIntent();
         if (intent.getStringExtra("media").equals("video")) {
             uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
             projection = new String[] { MediaStore.MediaColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME };
+            Intent intent1= new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent1,10);
         } else {
             uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
             projection = new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME };

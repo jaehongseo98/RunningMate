@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder> {
-    private ArrayList<String> mDataset;
+    private final ArrayList<String> mDataset;
     private Activity activity;
 
     public static class GalleryViewHolder extends RecyclerView.ViewHolder {
@@ -43,14 +43,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     @Override
     public void onBindViewHolder(@NonNull final GalleryViewHolder holder, int position){
         CardView cardView = holder.cardView;
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("profilePath", mDataset.get(holder.getAdapterPosition()));
-                activity.setResult(Activity.RESULT_OK, resultIntent);
-                activity.finish();
-            }
+        cardView.setOnClickListener(v -> {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("profilePath", mDataset.get(holder.getAdapterPosition()));
+            activity.setResult(Activity.RESULT_OK, resultIntent);
+            activity.finish();
         });
 
         ImageView imageView = cardView.findViewById(R.id.imageView);
