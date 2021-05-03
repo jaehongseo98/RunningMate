@@ -66,6 +66,8 @@ Layout3Fragment extends Fragment{
     ArrayList<Profile> list;
     ArrayList<Chat> list2;
     int roomCnt = -1;
+    EditText search;
+    ImageView clickSearch;
 
     @Nullable
     @Override
@@ -79,6 +81,8 @@ Layout3Fragment extends Fragment{
         btnPlusChat = root.findViewById(R.id.btnPlusChat);
         profileAdapter = new ProfileAdapter();
         chatAdapter = new ChatAdapter();
+        search = root.findViewById(R.id.search);
+        clickSearch = root.findViewById(R.id.clickSearch);
 
         btnPlusChat.setVisibility(View.GONE);
 
@@ -205,6 +209,33 @@ Layout3Fragment extends Fragment{
 
         lvBoard.setAdapter(profileAdapter);
 
+        // 친구목록 검색 기능
+        clickSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseReference.child("Users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        list.clear();
+                        for(DataSnapshot snapshot1 : snapshot.getChildren()){
+                            Profile get = snapshot1.getValue(Profile.class);
+                            if(get.name.contains(search.getText().toString().trim())){
+                                list.add(get);
+                                profileAdapter.addItem(list);
+                                profileAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+
+        // 상단 전체친구 창
         btnAllF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -213,6 +244,7 @@ Layout3Fragment extends Fragment{
             }
         });
 
+        // 상단 채팅 창
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

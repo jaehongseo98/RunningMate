@@ -278,14 +278,19 @@ public class ChatActivity extends AppCompatActivity {
 //            }
 //        };
         // 채팅에 대한 문제 
-        // 1번 : 앱 실행 시 프로필 사진 등록 후 채팅창 이용가능(미등록시 NPE)
+        // 1번 : 앱 실행 시 프로필 사진 등록 후 채팅창 이용가능(미등록시 NPE) -> "" 로 대체
+        // -> db에서 가져오지 않고 앱 내에 저장된 사진을 가져오므로 앱 실행시 사진을 등록해주어야 함
         String cuname = firebaseUser.getDisplayName();
-        profileUrl = G.profileUrl;
+        if (G.profileUrl == null){
+            profileUrl = "";
+        } else {
+            profileUrl = G.profileUrl;
+        }
         Log.i("profileUrl123123",profileUrl);
         ChatData messageItem= new ChatData(cuname,message,time,profileUrl);
         chatRef.push().setValue(messageItem);
         // 1번 끝
-        // 2번 : 1번 문제는 해결 되지만 db값이 변경 될 때마다 채팅창 심각한 오류
+        // 2번 : 1번 문제는 해결 되지만 db값이 변경 될 때마다 채팅창 오류
 //        String cuname = firebaseUser.getDisplayName();
 //        //list = new ArrayList<>();
 //        databaseReference.child("Users").addValueEventListener(new ValueEventListener() {
@@ -331,25 +336,3 @@ public class ChatActivity extends AppCompatActivity {
         //즉, EditText를 감싼 Layout에게 포커스를 가지도록 속성을 추가!![[XML에]
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

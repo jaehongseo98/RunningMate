@@ -1,6 +1,9 @@
 package com.example.project;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 // 3번째 fragment에 붙일 adpater(프로필과 이름)
@@ -43,6 +47,16 @@ public class ProfileAdapter extends BaseAdapter {
     DatabaseReference databaseReference;
     FirebaseAuth fireAuth;
     FirebaseUser fireUser;
+//    Context context;
+//    Activity activity;
+//    ArrayList<Profile> list_data = new ArrayList<>();
+//    Profile data;
+//
+//    public ProfileAdapter(Context context, ArrayList<Profile> list_data, Activity activity){
+//        this.context = context;
+//        this.activity = activity;
+//        this.list_data = list_data;
+//    }
 
     // dataset 에 있는 항목 수
     @Override
@@ -109,12 +123,22 @@ public class ProfileAdapter extends BaseAdapter {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fireUser.updatePassword("changePw").continueWith(task -> {
-                    if(task.isSuccessful()){
-                        Toast.makeText(v.getContext(), "변경 됨", Toast.LENGTH_SHORT).show();
-                    }
-                    return null;
-                });
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(root.getApplicationContext());
+//                alertDialog.setMessage("정말 삭제?");
+//                alertDialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(root, "삭제 누름", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                alertDialog.setNegativeButton("no", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(root, "취소 누름", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                AlertDialog alertDialog1 = alertDialog.create();
+//                alertDialog1.show();
                 databaseReference.child("Users").addValueEventListener(new ValueEventListener() {//Users 밑에 있는 자식들의 이벤트 메서드
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -122,12 +146,6 @@ public class ProfileAdapter extends BaseAdapter {
                             Profile profile1 = snapshot1.getValue(Profile.class);
                             if(profile1.getName().equals(name)){// Users 밑의 자식들중 value 값중 현재 위치의 이름값과 같다면
                                 String key = snapshot1.getKey();// 해당하는 key값을 가져와
-
-//                                DatabaseReference hopperRef = databaseReference.child("Users").child(key);
-//                                Map<String, Object> hopperUpdates = new HashMap<>();
-//                                hopperUpdates.put("pw", "changePw");
-//
-//                                hopperRef.updateChildren(hopperUpdates);
                                 databaseReference.child("Users").child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {// 삭제이벤트 실행
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
