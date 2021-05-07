@@ -1,8 +1,8 @@
 package com.example.project;
 
 import android.app.Activity;
-import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -13,11 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -26,6 +23,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import static com.example.project.Util.isStorageUrl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,8 +37,10 @@ import java.util.Date;
 public class WritePostActivity extends BasicActivity {
     private static final String TAG = "WritePostActivity";
     private FirebaseUser user;
+    private StorageReference storageRef;
     private ArrayList<String> pathList = new ArrayList<>();
     private LinearLayout parent;
+    private PostInfo postInfo;
     int pathCount, successCount;
 
     @Override
@@ -52,6 +53,11 @@ public class WritePostActivity extends BasicActivity {
         findViewById(R.id.btnWrite).setOnClickListener(onClickListener);
         findViewById(R.id.btnImg).setOnClickListener(onClickListener);
         findViewById(R.id.btnVideo).setOnClickListener(onClickListener);
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+
+        postInfo = (PostInfo) getIntent().getSerializableExtra("postInfo");
     }
 
     @Override
@@ -104,59 +110,68 @@ public class WritePostActivity extends BasicActivity {
 
             if (title.length() > 0) {
                 final ArrayList<String> contentsList = new ArrayList<>();
+                final ArrayList<String> formatList = new ArrayList<>();
                 user = FirebaseAuth.getInstance().getCurrentUser();
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReference();
                 FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
                 final DocumentReference documentReference = firebaseFirestore.collection("cities").document();
+                final Date date = postInfo == null ? new Date() : postInfo.getCreatedAt();
                 for (int i = 0; i < parent.getChildCount(); i++) {
-                    View view = parent.getChildAt(i);
-                    if (view instanceof EditText) {
-                        String text = ((EditText) view).getText().toString();
-                        if (text.length() > 0) {
-                            contentsList.add(text);
-                        }
-                    } else {
-                        contentsList.add(pathList.get(pathCount));
-                        final StorageReference mountainImagesRef = storageRef.child("user/" + user.getUid() + "/" + pathCount + ".jpg");
-                        try {
-                            InputStream stream = new FileInputStream(new File(pathList.get(pathCount)));
-                            StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("index", "" + pathCount).build();
-                            UploadTask uploadTask = mountainImagesRef.putStream(stream, metadata);
-                            uploadTask.addOnFailureListener(exception -> {
-                                // Handle unsuccessful uploads
-                            }).addOnSuccessListener(taskSnapshot -> {
-                                final int index = Integer.parseInt(taskSnapshot.getMetadata().getCustomMetadata("index"));
-                                mountainImagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                                    contentsList.set(index, uri.toString());
-                                    successCount++;
-                                    if (pathList.size() == successCount) {
-                                        //완료
-                                        WriteInfo writeInfo = new WriteInfo(title, contentsList, user.getUid(), new Date());
-                                        storeUpload(documentReference, writeInfo);
-                                    }
+                    LinearLayout linearLayout = (LinearLayout) parent.getChildAt(i);
+                    for (int ii = 0; ii < linearLayout.getChildCount(); ii++) {
+                        View view = linearLayout.getChildAt(ii);
+                        if (view instanceof EditText) {
+                            String text = ((EditText) view).getText().toString();
+                            if (text.length() > 0) {
+                                contentsList.add(text);
+                                formatList.add("text");
+                            }
+                        } else if (!isStorageUrl(pathList.get(pathCount))) {
+                            String path = pathList.get(pathCount);
+                            successCount++;
+                            contentsList.add(path);
+                            String[] pathArray = path.split("\\.");
+                            final StorageReference mountainImagesRef = storageRef.child("post/" + documentReference.getId() + "/" + pathCount + "." + pathArray[pathArray.length - 1]);
+                            try {
+                                InputStream stream = new FileInputStream(new File(pathList.get(pathCount)));
+                                StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("index", "" + (contentsList.size() - 1)).build();
+                                UploadTask uploadTask = mountainImagesRef.putStream(stream, metadata);
+                                uploadTask.addOnFailureListener(exception -> {
+                                }).addOnSuccessListener(taskSnapshot -> {
+                                    final int index = Integer.parseInt(taskSnapshot.getMetadata().getCustomMetadata("index"));
+                                    mountainImagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                                        successCount--;
+                                        contentsList.set(index, uri.toString());
+                                        if (successCount == 0) {
+                                            PostInfo postInfo = new PostInfo(title, contentsList, formatList, user.getUid(), date);
+                                            storeUpload(documentReference, postInfo);
+                                        }
+                                    });
                                 });
-                            });
-                        } catch (FileNotFoundException e) {
-                            Log.e("로그", "에러" + e.toString());
+                            } catch (FileNotFoundException e) {
+                                Log.e("로그", "에러" + e.toString());
+                            }
+                            pathCount++;
                         }
-                        pathCount++;
                     }
                 }
-
-            } else {
-                startToast("내용을 입력해주세요.");
+                if (successCount == 0) {
+                    storeUpload(documentReference, new PostInfo(title, contentsList, formatList, user.getUid(), date));
+                } else {
+                    startToast("제목을 입력해주세요.");
+                }
             }
         }
 
-        private void storeUpload(DocumentReference documentReference, WriteInfo writeInfo) {
-            documentReference.set(writeInfo)
+        private void storeUpload(DocumentReference documentReference, PostInfo PostInfo) {
+            documentReference.set(PostInfo)
                     .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully writen!"))
                     .addOnFailureListener(e -> Log.w(TAG, "Error writing document", e));
         }
 
         private void startToast(String msg) {
-            Toast.makeText(WritePostActivity.this, "", Toast.LENGTH_SHORT).show();
+            Toast.makeText(WritePostActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
 
         //GalleryActivity에 보냄

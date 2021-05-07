@@ -26,6 +26,7 @@ import java.util.HashMap;
 // 회원가입 화면(firebase-authentication 등록)
 public class RegisterActivity extends AppCompatActivity {
 
+
     EditText edtInputName, edtInputID, edtInputPW, edtInputRepeat;
     Button btnRegister, btnLogin;
     private FirebaseAuth firebaseAuth;
