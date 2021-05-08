@@ -102,7 +102,7 @@ Layout3Fragment extends Fragment{
         firebaseStorage  = firebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference().child("images/"+firebaseUser.getDisplayName());
 
-        ImageView imageView = root.findViewById(R.id.imageView);
+        //ImageView imageView = root.findViewById(R.id.imageView);
         //Glide.with(getContext()).
 
 

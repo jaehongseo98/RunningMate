@@ -343,7 +343,7 @@ public class ChatActivity extends AppCompatActivity {
 //        });
         // 2번 끝
 
-        sendGcm();
+        sendGcm(et.getText().toString());
 
         //EditText에 있는 글씨 지우기
         et.setText("");
@@ -360,34 +360,52 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     Profile destinationUserModel = new Profile();
-    void sendGcm(){
-        Gson gson = new Gson();
-        NotificationModel notificationModel = new NotificationModel();
-        //Log.i("notification error",destinationUserModel.getPushToken());
-        //notificationModel.to = destinationUserModel.getPushToken();
-        notificationModel.to = "dGgVgr8xSvaBN8CjgbSXVD:APA91bFdXnI6vor_N4pfoZw0DzO8Pe3bvMawZhHAcqz4cKLcz93orbIgiHTHGEWbhbobRCeZliPy743KWDRwLOhN-HHwSMC6ZqLJWipOfObosHPJFLLqR9Jfd6JQiypdx0-1mz3PX-FH";
-        //notificationModel.notification.title = firebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        notificationModel.notification.title = firebaseAuth.getInstance().getCurrentUser().getDisplayName() + ":" + et.getText().toString();
-        notificationModel.notification.text = "성공";
-
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"), gson.toJson(notificationModel));
-
-        Request request = new Request.Builder().header("Content-Type","application/json")
-                .addHeader("Authorization","key=AAAAUMSQTpQ:APA91bHh3XXqfKMXgGZvpTBWgSnxioNKq5voGX0dRej9j5TW1kGLF74vEF2gY1XJDi6C-sB_lEMavr9lotI1w_ZVZIo-0fTjrfkvE8UvqNs0j_-BvVxY9wjdLWvTb2NIhAzsLIUHja6i")
-                .url("https://fcm.googleapis.com/fcm/send").post(requestBody).build();
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+    void sendGcm(String msg){
+        firebaseDatabase.getReference().child("Users").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.i("fcm check","fcm fail!!");
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    //String key = dataSnapshot.getKey();
+                    final Profile profile = dataSnapshot.getValue(Profile.class);
+                    String pushToken = profile.pushToken;
+                    Log.i("pushToken Value",pushToken == null ? "null" : pushToken);
+
+                    Gson gson = new Gson();
+                    NotificationModel notificationModel = new NotificationModel();
+                    //Log.i("notification error",destinationUserModel.getPushToken());
+                    //notificationModel.to = destinationUserModel.getPushToken();
+                    notificationModel.to = pushToken;
+                    //notificationModel.notification.title = firebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                    notificationModel.notification.title = firebaseAuth.getInstance().getCurrentUser().getDisplayName() + " :  " + msg;
+                    notificationModel.notification.text = "성공";
+
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"), gson.toJson(notificationModel));
+
+                    Request request = new Request.Builder().header("Content-Type","application/json")
+                            .addHeader("Authorization","key=AAAAUMSQTpQ:APA91bHh3XXqfKMXgGZvpTBWgSnxioNKq5voGX0dRej9j5TW1kGLF74vEF2gY1XJDi6C-sB_lEMavr9lotI1w_ZVZIo-0fTjrfkvE8UvqNs0j_-BvVxY9wjdLWvTb2NIhAzsLIUHja6i")
+                            .url("https://fcm.googleapis.com/fcm/send").post(requestBody).build();
+
+                    OkHttpClient okHttpClient = new OkHttpClient();
+                    okHttpClient.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            Log.i("fcm check","fcm fail!!");
+                        }
+
+                        @Override
+                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                            Log.i("fcm check","fcm success!!");
+                        }
+                    });
+                }
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-            Log.i("fcm check","fcm success!!");
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
+
     }
 
 //    void sendGcm(){
