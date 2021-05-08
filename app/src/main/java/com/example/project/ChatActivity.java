@@ -163,9 +163,27 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -281,6 +299,7 @@ public class ChatActivity extends AppCompatActivity {
         // 1번 : 앱 실행 시 프로필 사진 등록 후 채팅창 이용가능(미등록시 NPE) -> "" 로 대체
         // -> db에서 가져오지 않고 앱 내에 저장된 사진을 가져오므로 앱 실행시 사진을 등록해주어야 함
         String cuname = firebaseUser.getDisplayName();
+        G.nickName = cuname;
         if (G.profileUrl == null){
             profileUrl = "";
         } else {
@@ -288,7 +307,9 @@ public class ChatActivity extends AppCompatActivity {
         }
         Log.i("profileUrl123123",profileUrl);
         ChatData messageItem= new ChatData(cuname,message,time,profileUrl);
+
         chatRef.push().setValue(messageItem);
+
         // 1번 끝
         // 2번 : 1번 문제는 해결 되지만 db값이 변경 될 때마다 채팅창 오류
 //        String cuname = firebaseUser.getDisplayName();
@@ -322,6 +343,8 @@ public class ChatActivity extends AppCompatActivity {
 //        });
         // 2번 끝
 
+        sendGcm();
+
         //EditText에 있는 글씨 지우기
         et.setText("");
 
@@ -335,4 +358,99 @@ public class ChatActivity extends AppCompatActivity {
         //그게 싫으면...다른 뷰가 포커스를 가지도록
         //즉, EditText를 감싼 Layout에게 포커스를 가지도록 속성을 추가!![[XML에]
     }
+
+    Profile destinationUserModel = new Profile();
+    void sendGcm(){
+        Gson gson = new Gson();
+        NotificationModel notificationModel = new NotificationModel();
+        //Log.i("notification error",destinationUserModel.getPushToken());
+        //notificationModel.to = destinationUserModel.getPushToken();
+        notificationModel.to = "dGgVgr8xSvaBN8CjgbSXVD:APA91bFdXnI6vor_N4pfoZw0DzO8Pe3bvMawZhHAcqz4cKLcz93orbIgiHTHGEWbhbobRCeZliPy743KWDRwLOhN-HHwSMC6ZqLJWipOfObosHPJFLLqR9Jfd6JQiypdx0-1mz3PX-FH";
+        //notificationModel.notification.title = firebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        notificationModel.notification.title = firebaseAuth.getInstance().getCurrentUser().getDisplayName() + ":" + et.getText().toString();
+        notificationModel.notification.text = "성공";
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"), gson.toJson(notificationModel));
+
+        Request request = new Request.Builder().header("Content-Type","application/json")
+                .addHeader("Authorization","key=AAAAUMSQTpQ:APA91bHh3XXqfKMXgGZvpTBWgSnxioNKq5voGX0dRej9j5TW1kGLF74vEF2gY1XJDi6C-sB_lEMavr9lotI1w_ZVZIo-0fTjrfkvE8UvqNs0j_-BvVxY9wjdLWvTb2NIhAzsLIUHja6i")
+                .url("https://fcm.googleapis.com/fcm/send").post(requestBody).build();
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.i("fcm check","fcm fail!!");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            Log.i("fcm check","fcm success!!");
+            }
+        });
+    }
+
+//    void sendGcm(){
+//        firebaseDatabase.getReference("Users").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+//                    String key = dataSnapshot.getKey();
+//                    if(firebaseAuth.getInstance().getCurrentUser().getUid().equals(key)){
+//                        final Profile profile = dataSnapshot.getValue(Profile.class);
+//                        //String pushToken = profile.pushToken;
+//                        Log.i("pushToken error",profile.pushToken);
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                try {
+//                                    JSONObject root = new JSONObject();
+//                                    JSONObject notification = new JSONObject();
+//                                    notification.put("body","안녕");
+//                                    notification.put("title","이정환");
+//                                    root.put("notification",notification);
+//                                    root.put("to",profile.pushToken);
+//
+//                                    URL Url = new URL("https://fcm.googleapis.com/fcm/send");
+//                                    HttpURLConnection conn = (HttpURLConnection) Url.openConnection();
+//                                    conn.setRequestMethod("POST");
+//                                    conn.setDoOutput(true);
+//                                    conn.setDoInput(true);
+//                                    conn.addRequestProperty("Authorization", "key=" + "AAAAUMSQTpQ:APA91bHh3XXqfKMXgGZvpTBWgSnxioNKq5voGX0dRej9j5TW1kGLF74vEF2gY1XJDi6C-sB_lEMavr9lotI1w_ZVZIo-0fTjrfkvE8UvqNs0j_-BvVxY9wjdLWvTb2NIhAzsLIUHja6i");
+//                                    conn.setRequestProperty("Accept", "application/json");
+//                                    conn.setRequestProperty("Content-type", "application/json");
+//                                    OutputStream os = conn.getOutputStream();
+//                                    os.write(root.toString().getBytes("utf-8"));
+//                                    os.flush();
+//                                    conn.getResponseCode();
+//                                } catch (Exception e){
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }).start();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
