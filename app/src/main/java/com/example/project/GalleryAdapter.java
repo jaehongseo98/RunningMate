@@ -50,8 +50,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
             activity.finish();
         });
 
-        ImageView imageView = cardView.findViewById(R.id.imageView);
-        Glide.with(activity).load(mDataset.get(position)).centerCrop().override(500).into(imageView);
+      // ImageView imageView = cardView.findViewById(R.id.imageView);
+      // Glide.with(activity).load(mDataset.get(position)).centerCrop().override(500).into(imageView);
     }
 
     @Override

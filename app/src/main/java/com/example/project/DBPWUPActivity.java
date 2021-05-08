@@ -33,7 +33,6 @@ public class DBPWUPActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference reference = database.getReference();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +53,8 @@ public class DBPWUPActivity extends AppCompatActivity {
                 String cupassword = cupw.getText().toString().trim();
                 String afpasswordre = afpwre.getText().toString().trim();
 
+
+
                 reference.child("Users").addValueEventListener(new ValueEventListener() {  //비밀번호 변경, 업로드
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -62,36 +63,39 @@ public class DBPWUPActivity extends AppCompatActivity {
                             if(user.getUid().equals(key)){
                                 UserInfo getPw = snapshot1.getValue(UserInfo.class);
                                 String dbgetpw = getPw.pw;
+                                Log.i("여기봐요",dbgetpw);
 
                                 if(dbgetpw.equals(cupassword) && afpassword.equals(afpasswordre)) {
+                                    Log.i("여긴가요","ㅇㅇㅇ");
                                     user.updatePassword(afpassword)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
+                                                        Log.i("여기좀 보세요", dbgetpw);
                                                         Log.d("여기요", "User password updated.");
+                                                        Log.i("여기좀 보세요3", cupassword);
+                                                        Log.i("여기좀 보세요2", afpassword);
+                                                        Log.i("여기좀 보세요4", afpasswordre);
+                                                        DatabaseReference reference2 = reference.child("Users").child(key);
+                                                        Map<String, Object> childUpdates = new HashMap<>();
+                                                        childUpdates.put("pw", afpassword);
+                                                        reference2.updateChildren(childUpdates);
                                                         Toast.makeText(v.getContext(), "성공함", Toast.LENGTH_SHORT).show();
-                                                        finish();
+                                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
                                                     } else {
+                                                        Log.i("ss",task.toString());
                                                         Toast.makeText(v.getContext(), "실패함", Toast.LENGTH_SHORT).show();
                                                     }
                                                 }
-                                            });
+                                    });
                                 }
 //                                }else{
 //                                    Toast.makeText(getApplicationContext(),"비밀번호 확인 바람",Toast.LENGTH_SHORT).show();
 //                                }
 
-                                Log.i("여기좀 보세요3", cupassword);
-                                Log.i("여기좀 보세요2", afpassword);
 
-                                Log.i("여기좀 보세요4", afpasswordre);
-                                DatabaseReference reference2 = reference.child("Users").child(key);
-                                Map<String, Object> childUpdates = new HashMap<>();
-                                childUpdates.put("pw", afpassword);
-                                reference2.updateChildren(childUpdates);
-                                Log.i("여기좀 보세요", dbgetpw);
 
                             }
                         }

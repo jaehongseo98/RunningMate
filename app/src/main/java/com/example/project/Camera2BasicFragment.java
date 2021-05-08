@@ -964,8 +964,13 @@ public class Camera2BasicFragment extends Fragment
         @Override
         public void run() {
             ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
+            SaveCalDTO save = SaveCalDTO.getInstance();
+            save.setTodaypic(mImage);
+            String date = save.getDate();
+            Log.e("dsfsf", String.valueOf(mImage));
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
+            Log.e("ddd",date);
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -974,7 +979,7 @@ public class Camera2BasicFragment extends Fragment
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
-            final StorageReference mountainImagesRef = storageRef.child("images/"+user.getDisplayName()+"test.jpg");
+            final StorageReference mountainImagesRef = storageRef.child("images/"+user.getDisplayName()+"/"+date+"/"+"health.jpg");
 
 
             UploadTask uploadTask = mountainImagesRef.putBytes(bytes);

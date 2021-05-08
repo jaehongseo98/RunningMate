@@ -46,7 +46,7 @@ public class DaumjusoActivity extends AppCompatActivity {
         webView.setWebChromeClient(new WebChromeClient());
 
         // webview url load. php 파일 주소
-        webView.loadUrl("https://daumjuso.netlify.app");
+        webView.loadUrl("http://192.168.0.6:8000/daumjuso.php");
 
     }
 
@@ -58,6 +58,7 @@ public class DaumjusoActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     txt_address.setText(String.format("(%s) %s %s", arg1, arg2, arg3));
+
 
                     // WebView를 초기화 하지않으면 재사용할 수 없음
                     init_webView();

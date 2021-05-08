@@ -29,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class UserUpdateActivity extends AppCompatActivity {
 
-    Button updatepw, btnjuso, btnexit;
+    Button updatepw, btnjuso, btnexit, btnsujung;
     TextView useremail;
     private WebView webView;
     private TextView txt_address;
@@ -57,6 +57,8 @@ public class UserUpdateActivity extends AppCompatActivity {
         reference = database.getReference();
 
 
+
+
         reference.child("Users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -81,21 +83,42 @@ public class UserUpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
+
+                reference.child("Users").addValueEventListener(new ValueEventListener() {  //Real DB  값 꺼내오기
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                            String key = snapshot1.getKey();
+                            if(user.getUid().equals(key)){
+                                reference.child(key).setValue(null);
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.w("TAG", "loadPost:onCancelled", error.toException());
+                    }
+                });
+
                 user.delete()
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(getApplicationContext(),"탈퇴 성공",Toast.LENGTH_SHORT).show();
-                                    finish();
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            }else{
+                                }else{
                                     Toast.makeText(getApplicationContext(),"오류 발생",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
+
             }
         });
+
 
 
         btnjuso.setOnClickListener(new View.OnClickListener() {
