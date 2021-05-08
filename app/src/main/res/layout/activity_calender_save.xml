@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:layout_marginTop="50dp"
         android:text="오늘 날짜" />
 
     <LinearLayout
@@ -40,7 +41,7 @@
                 android:id="@+id/edteat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="식단 \n\n\n" />
+                android:hint="식단 \n\n\n" />
         </LinearLayout>
     </LinearLayout>
 
@@ -69,20 +70,24 @@
                 android:id="@+id/edthealth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:text="운동 \n\n\n" />
+                android:hint="운동 \n\n\n" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
 
         <ImageView
             android:id="@+id/toim"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_launcher_foreground" />
+            app:srcCompat="@drawable/ic_launcher_foreground"
+            android:scaleType="fitCenter"
+            />
 
         <TextView
             android:id="@+id/textView20"
@@ -95,7 +100,10 @@
             android:id="@+id/btn_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="사진 입력"/>
+            android:layout_gravity="center_vertical"
+            android:background="#FFFFFF"
+            android:backgroundTint="#FFFFFF"
+            android:text="사진 입력" />
     </LinearLayout>
 
     <Button

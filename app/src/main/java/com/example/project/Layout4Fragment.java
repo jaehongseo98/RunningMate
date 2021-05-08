@@ -35,17 +35,17 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_layout4,container,false);
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true); //프래그먼트에서 메뉴옵션 허용
 
         user =(TextView)root.findViewById(R.id.user);
-        //updateuser = (Button)root.findViewById(R.id.updateuser);
-        //logout = (Button)root.findViewById(R.id.logout);
+        //updateuser = (Button)root.findViewById(R.id.updateuser); 버튼 주석 처리
+        //logout = (Button)root.findViewById(R.id.logout);  버튼 주석 처리
         calendar = (CalendarView)root.findViewById(R.id.calendar);
         auth = FirebaseAuth.getInstance();
         userof = auth.getCurrentUser();
         menu = (ImageButton)root.findViewById(R.id.menu);
 
-
+        //유저 닉네임 초기 설정
         String username = userof.getDisplayName();
         user.setText(username+"님 환영합니다");
 
@@ -57,6 +57,7 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
 //            }
 //        });
 
+        //캘린더 클릭 날짜 데이터 가지고 이동
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -68,6 +69,7 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
             }
         });
 
+        //상단 메뉴 바(로그아웃, 회원정보 수정 이동)
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +128,7 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
 //        return super.onOptionsItemSelected(item);
 //    }
 
+    //파이어베이스 세션 로그아웃(추후 보강 필요)
     @Override
     public void onClick(View v) {
         if (v == logout) {

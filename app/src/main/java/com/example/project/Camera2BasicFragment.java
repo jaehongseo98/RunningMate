@@ -962,14 +962,13 @@ public class Camera2BasicFragment extends Fragment
         }
 
         @Override
-        public void run() {
+        public void run() { //실행부분(사진 찍힐때) mlmage가 뭐지?? api 이해
             ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
             SaveCalDTO save = SaveCalDTO.getInstance();
-            save.setTodaypic(mImage);
             String date = save.getDate();
-            Log.e("dsfsf", String.valueOf(mImage));
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
+            Log.e("이미지가 담긴 곳은", String.valueOf(mImage));
             Log.e("ddd",date);
 
             FirebaseStorage storage = FirebaseStorage.getInstance();

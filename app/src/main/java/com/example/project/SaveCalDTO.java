@@ -2,7 +2,7 @@ package com.example.project;
 
 import android.media.Image;
 
-public class SaveCalDTO {
+public class SaveCalDTO { //캘린더에서 쓰는 DTO
     String eat;
     String exercise;
     Image todaypic;
@@ -16,7 +16,7 @@ public class SaveCalDTO {
         this.date = date;
     }
 
-    private static SaveCalDTO instance = new SaveCalDTO();
+    private static SaveCalDTO instance = new SaveCalDTO(); //전역적으로 객체를 쓰기 위한 야매방법 추후 세션을 이용한 방법으로 보강 필요
 
     public static SaveCalDTO getInstance(){
         return instance;
