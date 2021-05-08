@@ -4,6 +4,15 @@ package com.example.project;
 public class Profile {
     String profileUrl;
     String name;
+    public String pushToken;
+
+    public String getPushToken() {
+        return pushToken;
+    }
+
+    public void setPushToken(String pushToken) {
+        this.pushToken = pushToken;
+    }
 
     public double getLongitude() {
         return longitude;

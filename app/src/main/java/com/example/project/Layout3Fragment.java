@@ -36,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -65,6 +66,7 @@ Layout3Fragment extends Fragment{
     StorageReference storageReference;
     ArrayList<Profile> list;
     ArrayList<Chat> list2;
+
     int roomCnt = -1;
     EditText search;
     ImageView clickSearch;
@@ -87,6 +89,8 @@ Layout3Fragment extends Fragment{
         btnPlusChat.setVisibility(View.GONE);
 
         //btnPlusChat.setVisibility(View.GONE);
+
+        passPushTokenToServer();
 
         // 1.현재 로그인한 사용자를 가져옴
         firebaseUser = firebaseAuth.getInstance().getCurrentUser();
@@ -267,5 +271,16 @@ Layout3Fragment extends Fragment{
         return root;
     }
 
+    void passPushTokenToServer(){
+        String uid = firebaseAuth.getInstance().getCurrentUser().getUid();
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.i("token value",token);
+        Profile profile = new Profile();
+        profile.setPushToken(token);
+        Map<String, Object> map = new HashMap<>();
+        map.put("pushToken",token);
+
+        firebaseDatabase.getInstance().getReference().child("Users").child(uid).updateChildren(map);
+    }
 
 }
