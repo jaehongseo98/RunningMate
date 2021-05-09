@@ -2,6 +2,9 @@ package com.example.project;
 
 import android.media.Image;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SaveCalDTO { //캘린더에서 쓰는 DTO
     String eat;
     String exercise;
@@ -58,5 +61,12 @@ public class SaveCalDTO { //캘린더에서 쓰는 DTO
         this.eat = eat;
         this.exercise = exercise;
         this.todaypic = todaypic;
+    }
+
+    public Map<String, String> toMap() {
+        HashMap<String, String> result = new HashMap<>();
+
+
+        return result;
     }
 }

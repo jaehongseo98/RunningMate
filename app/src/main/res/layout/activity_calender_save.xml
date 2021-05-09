@@ -41,7 +41,7 @@
                 android:id="@+id/edteat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="식단 \n\n\n" />
+                android:hint="식단(,로 구분) \n\n\n" />
         </LinearLayout>
     </LinearLayout>
 
@@ -70,7 +70,7 @@
                 android:id="@+id/edthealth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="운동 \n\n\n" />
+                android:hint="운동(,로 구분) \n\n\n" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -114,4 +114,28 @@
         android:text="저장"
         android:background="#96DEFF"
         android:textColor="#ffffff"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:text="수정"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/cha_Btn"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:visibility="invisible"/>
+
+        <Button
+            android:text="삭제"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/del_Btn"
+            android:layout_marginRight="8dp"
+            android:visibility="invisible" />
+    </LinearLayout>
+
 </LinearLayout>

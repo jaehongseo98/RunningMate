@@ -3,10 +3,12 @@ package com.example.project;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -26,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class UserUpdateActivity extends AppCompatActivity {
 
@@ -40,6 +43,7 @@ public class UserUpdateActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference reference;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +54,12 @@ public class UserUpdateActivity extends AppCompatActivity {
         txt_address = (TextView)findViewById(R.id.txt_address);
         updatepw = (Button)findViewById(R.id.updatepw);
         btnjuso = (Button)findViewById(R.id.btnjuso);
-        btnexit = (Button)findViewById(R.id.btn_exit);
+        btnexit = (Button) findViewById(R.id.btn_exit);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
+        btnsujung = (Button)findViewById(R.id.btnsujung);
 
 
 
@@ -79,19 +84,18 @@ public class UserUpdateActivity extends AppCompatActivity {
             }
         });
 
+
+
         btnexit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
                 reference.child("Users").addValueEventListener(new ValueEventListener() {  //Real DB  값 꺼내오기
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                             String key = snapshot1.getKey();
                             if(user.getUid().equals(key)){
-                                reference.child(key).setValue(null);
+                                reference.child("Users").child(key).setValue(null);
 
                             }
                         }
@@ -130,7 +134,13 @@ public class UserUpdateActivity extends AppCompatActivity {
             }
         });
 
-
+        btnsujung.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //주소, 닉네임 받아서 저장 하는건데 DB 설계
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
 
 
         updatepw.setOnClickListener(new View.OnClickListener() {

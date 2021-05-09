@@ -2,6 +2,7 @@ package com.example.project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,15 +21,25 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 // bottomNavigation 에서 매칭된 네번째 fragment
 public class Layout4Fragment extends Fragment implements View.OnClickListener{
     FirebaseAuth auth;
     FirebaseUser userof;
-    TextView user;
+    TextView user, result;
     Button updateuser, logout;
     CalendarView calendar;
     ImageButton menu;
+    FirebaseDatabase database;
+    DatabaseReference reference;
+    int day1 = 0;
+    int month1 = 0;
+    int year1 = 0;
 
 
     @Nullable
@@ -44,10 +55,36 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
         auth = FirebaseAuth.getInstance();
         userof = auth.getCurrentUser();
         menu = (ImageButton)root.findViewById(R.id.menu);
+        result = (TextView)root.findViewById(R.id.result);
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference();
 
         //유저 닉네임 초기 설정
         String username = userof.getDisplayName();
         user.setText(username+"님 환영합니다");
+
+
+        String da = calendar.getDate()+"";
+        //String.valueOf(year1)+String.valueOf(month1)+String.valueOf(day1);
+
+        reference.child("Calender").child(username).child(da).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    if(snapshot1.hasChild("eat")) {
+                        SaveCalDTO geteat = snapshot1.getValue(SaveCalDTO.class);
+                        String eat = geteat.getEat();
+                        result.setText(eat);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("TAG", "loadPost:onCancelled", error.toException());
+            }
+        });
+
 
 //        updateuser.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -61,6 +98,9 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                year1 = year;
+                month1 = month;
+                day1 = dayOfMonth;
                 Intent intent = new Intent(getActivity(), CalenderSaveActivity.class);
                 intent.putExtra("year",year);
                 intent.putExtra("month",month+1);

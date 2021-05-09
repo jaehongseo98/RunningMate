@@ -46,7 +46,7 @@ public class DaumjusoActivity extends AppCompatActivity {
         webView.setWebChromeClient(new WebChromeClient());
 
         // webview url load. php 파일 주소
-        webView.loadUrl("http://192.168.0.6:8000/daumjuso.php");
+     //   webView.loadUrl("http://192.168.0.6:8000/daumjuso.php");
 
     }
 

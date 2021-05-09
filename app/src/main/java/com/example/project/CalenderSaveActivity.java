@@ -5,42 +5,31 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.os.Build.ID;
 
 class PicassoTransformations { //picasso 라이브러리 화면 비율 자동 조정
 
@@ -69,7 +58,7 @@ public class CalenderSaveActivity extends AppCompatActivity {
 
     EditText edteat, edthealth;
     TextView today;
-    Button btninit;
+    Button btninit, btncha, btndel;
     //String shared = "file";
     ImageView toim;
     Uri uri1;
@@ -98,6 +87,8 @@ public class CalenderSaveActivity extends AppCompatActivity {
         save_Btn = (Button)findViewById(R.id.ok);
         today = (TextView)findViewById(R.id.date);
         toim = (ImageView)findViewById(R.id.toim);
+        btncha = (Button)findViewById(R.id.cha_Btn);
+        btndel = (Button)findViewById(R.id.del_Btn);
 
         Intent getintent = getIntent();
         int year = getintent.getIntExtra("year",0);
@@ -124,6 +115,21 @@ public class CalenderSaveActivity extends AppCompatActivity {
                 // Got the download URL for 'users/me/profile.png'
                 uri1 = uri;
                 Picasso.get().load(uri).transform(PicassoTransformations.resizeTransformation).into(toim);
+                toim.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+//                      iw = (int)event.getX();
+//                      jh = (int)event.getY();
+
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN: //확대부분
+                                Picasso.get().load(uri1).into(toim);
+//                          case MotionEvent.ACTION_UP: 원상태 코드 추가해야함
+//                              Picasso.get().load(uri1).transform(PicassoTransformations.resizeTransformation).into(toim);
+                        }
+                        return false;
+                    }
+                });
                 Log.e("sdfsa", String.valueOf(uri));
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -134,32 +140,62 @@ public class CalenderSaveActivity extends AppCompatActivity {
             }
         });
 
-        toim.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-//                iw = (int)event.getX();
-//                jh = (int)event.getY();
-                
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        Picasso.get().load(uri1).into(toim);
-//                    case MotionEvent.ACTION_UP: 원상태 코드 추가해야함
-//                        Picasso.get().load(uri1).transform(PicassoTransformations.resizeTransformation).into(toim);
-                }
-                return false;
-            }
-        });
+
 
 
         save_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String dbineat = edteat.getText().toString();
-                String dbinhealth = edthealth.getText().toString();
+                String dbineat = edteat.getText().toString().trim();
+                String dbinhealth = edthealth.getText().toString().trim();
+                String displayName = user.getDisplayName();
+                String[] eat = dbineat.split("\\,");
+                String[] health = dbinhealth.split("\\,");
+                ArrayList<String> list = new ArrayList<>();
 
+
+                //해쉬맵 테이블을 파이어베이스 데이터베이스에 저장
+                HashMap<String, String> hashMap = new HashMap<>();
+                HashMap<String, String> hashMap2 = new HashMap<>();
+
+                for(int i=0; i<eat.length; i++){
+                    hashMap.put((i+1)+"",eat[i]);
+                }
+
+                for(int i=0; i<health.length; i++){
+                    hashMap2.put((i+1)+"",health[i]);
+                }
+
+                System.out.print(hashMap.values());
+
+                // db접근 권한
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                // db에 Users 인스턴스 가짐
+                DatabaseReference reference = database.getReference("Calender");
+                // 그 자식에 hashMap 넣기
+                reference.child(displayName).child(da).child("eat").setValue(hashMap);
+                reference.child(displayName).child(da).child("health").setValue(hashMap2);
+                finish();
+
+//                save_Btn.setVisibility(View.INVISIBLE);
+//                btncha.setVisibility(View.VISIBLE);
+//                btndel.setVisibility(View.VISIBLE);
             }
         });
 
+//        btncha.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//
+//        btndel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
 
         btninit.setOnClickListener(new View.OnClickListener() { //사진 저장 액티비티 넘어가는 곳
@@ -191,6 +227,7 @@ public class CalenderSaveActivity extends AppCompatActivity {
 //        editor.commit();
 //
 //    }
+
 
 
 }
