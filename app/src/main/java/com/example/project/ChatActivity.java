@@ -376,8 +376,12 @@ public class ChatActivity extends AppCompatActivity {
                     //notificationModel.to = destinationUserModel.getPushToken();
                     notificationModel.to = pushToken;
                     //notificationModel.notification.title = firebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                    // background FCM
                     notificationModel.notification.title = firebaseAuth.getInstance().getCurrentUser().getDisplayName() + " :  " + msg;
                     notificationModel.notification.text = "성공";
+                    // foreground FCM
+                    notificationModel.data.title = firebaseAuth.getInstance().getCurrentUser().getDisplayName() + " :  " + msg;
+                    notificationModel.data.text = "성공";
 
                     RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"), gson.toJson(notificationModel));
 
