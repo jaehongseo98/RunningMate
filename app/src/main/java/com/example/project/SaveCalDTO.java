@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SaveCalDTO { //캘린더에서 쓰는 DTO
-    String eat;
-    String exercise;
-    Image todaypic;
-    String date;
+    public String[] eat;
+    public String[] exercise;
+    public Image todaypic;
+    public String date;
 
     public String getDate() {
         return date;
@@ -29,11 +29,11 @@ public class SaveCalDTO { //캘린더에서 쓰는 DTO
 
     }
 
-    public String getEat() {
+    public String[] getEat() {
         return eat;
     }
 
-    public void setEat(String eat) {
+    public void setEat(String[] eat) {
         this.eat = eat;
     }
 
@@ -41,11 +41,11 @@ public class SaveCalDTO { //캘린더에서 쓰는 DTO
         this.todaypic = todaypic;
     }
 
-    public String getExercise() {
+    public String[] getExercise() {
         return exercise;
     }
 
-    public void setExercise(String exercise) {
+    public void setExercise(String[] exercise) {
         this.exercise = exercise;
     }
 
@@ -57,13 +57,14 @@ public class SaveCalDTO { //캘린더에서 쓰는 DTO
         this.todaypic = todaypic;
     }
 
-    public SaveCalDTO(String eat, String exercise, Image todaypic) {
+    public SaveCalDTO(String eat[], String exercise[], Image todaypic) {
         this.eat = eat;
         this.exercise = exercise;
         this.todaypic = todaypic;
     }
 
     public Map<String, String> toMap() {
+
         HashMap<String, String> result = new HashMap<>();
 
 
