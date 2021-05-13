@@ -50,9 +50,9 @@ public class WritePostActivity extends BasicActivity {
 
         parent = findViewById(R.id.contentsLayout);
 
-        findViewById(R.id.btnWrite).setOnClickListener(onClickListener);
-        findViewById(R.id.btnImg).setOnClickListener(onClickListener);
-        findViewById(R.id.btnVideo).setOnClickListener(onClickListener);
+        findViewById(R.id.check).setOnClickListener(onClickListener);
+        findViewById(R.id.image).setOnClickListener(onClickListener);
+        findViewById(R.id.video).setOnClickListener(onClickListener);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
@@ -91,13 +91,13 @@ public class WritePostActivity extends BasicActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.btnWrite:
+                case R.id.check:
                     storageUpload();
                     break;
-                case R.id.btnImg:
+                case R.id.image:
                     myStartActivity(GalleryActivity.class, "image");
                     break;
-                case R.id.btnVideo:
+                case R.id.video:
                     myStartActivity(GalleryActivity.class, "video");
                     break;
             }
@@ -106,7 +106,7 @@ public class WritePostActivity extends BasicActivity {
         ;
 
         private void storageUpload() {
-            final String title = ((EditText) findViewById(R.id.edtTitle)).getText().toString();
+            final String title = ((EditText) findViewById(R.id.titleEditText)).getText().toString();
 
             if (title.length() > 0) {
                 final ArrayList<String> contentsList = new ArrayList<>();
