@@ -1,11 +1,10 @@
 package com.example.project;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 // bottomNavigation 에서 매칭된 네번째 fragment
 public class Layout4Fragment extends Fragment implements View.OnClickListener{
     FirebaseAuth auth;
@@ -37,9 +38,9 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
     ImageButton menu;
     FirebaseDatabase database;
     DatabaseReference reference;
-    int day1 = 0;
-    int month1 = 0;
-    int year1 = 0;
+    public int day1;
+    public int month1;
+    public int year1;
 
 
     @Nullable
@@ -63,19 +64,36 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
         String username = userof.getDisplayName();
         user.setText(username+"님 환영합니다");
 
+        Log.e("sad", String.valueOf(year1));
+        Log.e("sad1", String.valueOf(day1));
+        Log.e("sad2", String.valueOf(month1));
 
-        String da = calendar.getDate()+"";
+
+        String a = String.valueOf(year1);
+        String b = String.valueOf(month1);
+        String c = String.valueOf(day1);
+
+        Log.e("sad", a);
+
+
+        String da = a+b+c;
+        Log.i("sdf3",da);
         //String.valueOf(year1)+String.valueOf(month1)+String.valueOf(day1);
 
-        reference.child("Calender").child(username).child(da).addValueEventListener(new ValueEventListener() {
+        reference.child("Calender").child(userof.getDisplayName()).child("2021513").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<SaveCalDTO> list = new ArrayList<>();
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    if(snapshot1.hasChild("eat")) {
-                        SaveCalDTO geteat = snapshot1.getValue(SaveCalDTO.class);
-                        String eat = geteat.getEat();
-                        result.setText(eat);
-                    }
+                    SaveCalDTO geteat = snapshot1.getValue(SaveCalDTO.class);
+                        String[] leat = geteat.eat;
+                        Log.e("여기요", String.valueOf(leat));
+//                        String lhealth = geteat.exercise;
+//                        list.add(new SaveCalDTO()[]{leat,lhealth};);
+//                        for(String[] gett : list){
+//                            result.setText(gett.toString());
+//                            Log.e("get value", gett.toString());
+//                        }
                 }
             }
 
@@ -94,12 +112,13 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
 //            }
 //        });
 
+
         //캘린더 클릭 날짜 데이터 가지고 이동
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 year1 = year;
-                month1 = month;
+                month1 = month+1;
                 day1 = dayOfMonth;
                 Intent intent = new Intent(getActivity(), CalenderSaveActivity.class);
                 intent.putExtra("year",year);
@@ -116,6 +135,7 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
                 PopupMenu popupMenu = new PopupMenu(getContext(),v);
                 popupMenu.getMenuInflater().inflate(R.menu.ex_4menu,popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @SuppressLint("NonConstantResourceId")
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
@@ -124,10 +144,9 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
                                 startActivity(intent);
                                 return true;
                             case R.id.log:
-                                if (v == logout) {
-                                    auth.signOut();
-                                    startActivity(new Intent(getActivity(), MainActivity.class));
-                                }
+                                auth.signOut();
+                                startActivity(new Intent(getActivity(), MainActivity.class));
+                                return true;
                             default:
                                 return false;
                         }
