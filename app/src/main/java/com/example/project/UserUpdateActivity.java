@@ -16,6 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +31,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserUpdateActivity extends AppCompatActivity {
 
     Button updatepw, btnjuso, btnexit, btnsujung;
     TextView useremail;
+    EditText edtnik, edtbirth, edtema;
     private WebView webView;
     private TextView txt_address;
     private Handler handler;
@@ -60,6 +65,9 @@ public class UserUpdateActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
         btnsujung = (Button)findViewById(R.id.btnsujung);
+        edtnik = (EditText)findViewById(R.id.editnickname);
+        edtbirth = (EditText)findViewById(R.id.edtbirth);
+        edtema = (EditText)findViewById(R.id.edtemail);
 
 
 
@@ -137,6 +145,33 @@ public class UserUpdateActivity extends AppCompatActivity {
         btnsujung.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                reference.child("Users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                            String key = snapshot1.getKey();
+                            if(user.getUid().equals(key)){
+                                String nick = edtnik.getText().toString().trim();
+                                String birth = edtbirth.getText().toString().trim();
+                                String email = edtema.getText().toString().trim();
+                                DatabaseReference reference2 = reference.child("Users").child(key);
+                                Map<String, Object> childUpdates = new HashMap<>();
+                                childUpdates.put("nickname", nick);
+                                childUpdates.put("birth", birth);
+                                childUpdates.put("email", email);
+                                reference2.updateChildren(childUpdates);
+                                Toast.makeText(v.getContext(), "성공함", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.w("TAG", "loadPost:onCancelled", error.toException());
+                    }
+                });
                 //주소, 닉네임 받아서 저장 하는건데 DB 설계
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }

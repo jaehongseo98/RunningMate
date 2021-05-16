@@ -176,6 +176,7 @@ public class CalenderSaveActivity extends AppCompatActivity {
                 reference.child(displayName).child(da).child("eat").setValue(hashMap);
                 reference.child(displayName).child(da).child("health").setValue(hashMap2);
                 finish();
+                //startActivity(intent);
 
 //                save_Btn.setVisibility(View.INVISIBLE);
 //                btncha.setVisibility(View.VISIBLE);

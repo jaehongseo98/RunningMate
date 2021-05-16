@@ -2,14 +2,16 @@ package com.example.project;
 
 import android.media.Image;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SaveCalDTO { //캘린더에서 쓰는 DTO
-    public String[] eat;
-    public String[] exercise;
+public class SaveCalDTO{ //캘린더에서 쓰는 DTO
+    public String eat;
+    public String health;
     public Image todaypic;
     public String date;
+
 
     public String getDate() {
         return date;
@@ -29,11 +31,11 @@ public class SaveCalDTO { //캘린더에서 쓰는 DTO
 
     }
 
-    public String[] getEat() {
+    public String getEat() {
         return eat;
     }
 
-    public void setEat(String[] eat) {
+    public void setEat(String eat) {
         this.eat = eat;
     }
 
@@ -41,12 +43,12 @@ public class SaveCalDTO { //캘린더에서 쓰는 DTO
         this.todaypic = todaypic;
     }
 
-    public String[] getExercise() {
-        return exercise;
+    public String getHealth() {
+        return health;
     }
 
-    public void setExercise(String[] exercise) {
-        this.exercise = exercise;
+    public void setHealth(String health) {
+        this.health = health;
     }
 
     public Image getTodaypic() {
@@ -57,9 +59,9 @@ public class SaveCalDTO { //캘린더에서 쓰는 DTO
         this.todaypic = todaypic;
     }
 
-    public SaveCalDTO(String eat[], String exercise[], Image todaypic) {
+    public SaveCalDTO(String eat, String health, Image todaypic) {
         this.eat = eat;
-        this.exercise = exercise;
+        this.health = health;
         this.todaypic = todaypic;
     }
 

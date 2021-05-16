@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 // bottomNavigation 에서 매칭된 네번째 fragment
 public class Layout4Fragment extends Fragment implements View.OnClickListener{
@@ -38,9 +39,11 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
     ImageButton menu;
     FirebaseDatabase database;
     DatabaseReference reference;
-    public int day1;
-    public int month1;
-    public int year1;
+    DatabaseReference reference2;
+
+//    public int day1;
+//    public int month1;
+//    public int year1;
 
 
     @Nullable
@@ -60,48 +63,22 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
 
+
+
         //유저 닉네임 초기 설정
         String username = userof.getDisplayName();
         user.setText(username+"님 환영합니다");
 
-        Log.e("sad", String.valueOf(year1));
-        Log.e("sad1", String.valueOf(day1));
-        Log.e("sad2", String.valueOf(month1));
 
+//        Intent getintent = getActivity().getIntent();
+//
+//        day = getintent.getStringExtra("date");
 
-        String a = String.valueOf(year1);
-        String b = String.valueOf(month1);
-        String c = String.valueOf(day1);
-
-        Log.e("sad", a);
-
-
-        String da = a+b+c;
-        Log.i("sdf3",da);
-        //String.valueOf(year1)+String.valueOf(month1)+String.valueOf(day1);
-
-        reference.child("Calender").child(userof.getDisplayName()).child("2021513").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<SaveCalDTO> list = new ArrayList<>();
-                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    SaveCalDTO geteat = snapshot1.getValue(SaveCalDTO.class);
-                        String[] leat = geteat.eat;
-                        Log.e("여기요", String.valueOf(leat));
-//                        String lhealth = geteat.exercise;
-//                        list.add(new SaveCalDTO()[]{leat,lhealth};);
-//                        for(String[] gett : list){
-//                            result.setText(gett.toString());
-//                            Log.e("get value", gett.toString());
-//                        }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("TAG", "loadPost:onCancelled", error.toException());
-            }
-        });
+//        Bundle bundle = getArguments();
+//
+//        if(bundle != null){
+//            day = bundle.getString("date");
+//        }
 
 
 //        updateuser.setOnClickListener(new View.OnClickListener() {
@@ -117,14 +94,66 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                year1 = year;
-                month1 = month+1;
-                day1 = dayOfMonth;
-                Intent intent = new Intent(getActivity(), CalenderSaveActivity.class);
-                intent.putExtra("year",year);
-                intent.putExtra("month",month+1);
-                intent.putExtra("day",dayOfMonth);
-                startActivity(intent);
+                int month1 = month+1;
+                String year1  = String.valueOf(year);
+                String month11  = String.valueOf(month1);
+                String day1  = String.valueOf(dayOfMonth);
+                String date = year1+month11+day1;
+                Log.e("ㅇㅇ",userof.getDisplayName());
+                Log.e("dad",date);
+//                ArrayList<SaveCalDTO> list = new ArrayList<>();
+//                SaveCalDTO ds = new SaveCalDTO();
+//                //빈 객체인데 값이 어케 있냐고
+                reference2 = database.getReference().child("Calender").child(userof.getDisplayName()).child(date).child("eat");
+                reference.child("Calender").child(userof.getDisplayName()).child(date).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.hasChild("eat")){
+                            for (DataSnapshot snapshot1 : snapshot.child("eat").getChildren()) {
+                                reference2.child(Objects.requireNonNull(snapshot1.getValue()).toString()).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        SaveCalDTO geteat = snapshot.getValue(SaveCalDTO.class);
+                                        Log.e("af", String.valueOf(geteat));
+                                        String leat = geteat.eat;
+                                        result.setText(leat);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                           ;
+
+        //                    String sf;
+        //                    for(int i=0; i<leat.length; i++){
+        //                        Log.e("af",leat[i]);
+        //                    }
+
+        //                        String lhealth = geteat.exercise;
+        //                        list.add(new SaveCalDTO()[]{leat,lhealth};);
+        //                        for(String[] gett : list){
+        //                            result.setText(gett.toString());
+        //                            Log.e("get value", gett.toString());
+        //                        }
+                        }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.w("TAG", "loadPost:onCancelled", error.toException());
+                    }
+                });
+
+//                Intent intent = new Intent(getActivity(), CalenderSaveActivity.class);
+//                intent.putExtra("year",year);
+//                intent.putExtra("month",month+1);
+//                intent.putExtra("day",dayOfMonth);
+//                startActivity(intent);
             }
         });
 
