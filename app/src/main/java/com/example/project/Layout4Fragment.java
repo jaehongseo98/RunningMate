@@ -13,6 +13,7 @@ import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,7 +34,7 @@ import java.util.Objects;
 public class Layout4Fragment extends Fragment implements View.OnClickListener{
     FirebaseAuth auth;
     FirebaseUser userof;
-    TextView user, result;
+    TextView user, result, result2;
     Button updateuser, logout;
     CalendarView calendar;
     ImageButton menu;
@@ -62,6 +63,7 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
         result = (TextView)root.findViewById(R.id.result);
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
+        result2 = (TextView)root.findViewById(R.id.result2);
 
 
 
@@ -88,6 +90,8 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
 //                startActivity(intent);
 //            }
 //        });
+        result.setText("");
+        result2.setText("");
 
 
         //캘린더 클릭 날짜 데이터 가지고 이동
@@ -101,31 +105,57 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
                 String date = year1+month11+day1;
                 Log.e("ㅇㅇ",userof.getDisplayName());
                 Log.e("dad",date);
+                ArrayList<String> eatlist = new ArrayList<>();
+                ArrayList<String> healthlist = new ArrayList<>();
+
 //                ArrayList<SaveCalDTO> list = new ArrayList<>();
 //                SaveCalDTO ds = new SaveCalDTO();
 //                //빈 객체인데 값이 어케 있냐고
                 reference2 = database.getReference().child("Calender").child(userof.getDisplayName()).child(date).child("eat");
                 reference.child("Calender").child(userof.getDisplayName()).child(date).addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.hasChild("eat")){
                             for (DataSnapshot snapshot1 : snapshot.child("eat").getChildren()) {
-                                reference2.child(Objects.requireNonNull(snapshot1.getValue()).toString()).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        SaveCalDTO geteat = snapshot.getValue(SaveCalDTO.class);
-                                        Log.e("af", String.valueOf(geteat));
-                                        String leat = geteat.eat;
-                                        result.setText(leat);
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
+                                String get = snapshot1.getValue(String.class);
+                                eatlist.add(get);
+//                                reference2.child(Objects.requireNonNull(snapshot1.getValue()).toString()).addValueEventListener(new ValueEventListener() {
+//                                    @Override
+//                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                        SaveCalDTO geteat = snapshot.getValue(SaveCalDTO.class);
+//                                        Log.e("af", String.valueOf(geteat));
+//                                        String leat = geteat.eat;
+//                                        result.setText(leat);
+//                                    }
+//
+//                                    @Override
+//                                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                                    }
+//                                });
+                            }
+                            String str = "";
+                            for (String list1 : eatlist){
+                                str += list1+" ";
+                                result.setText("오늘의 식사 : "+str);
+                                Log.e("ss",str);
                             }
                         }
+
+                        if(snapshot.hasChild("health")){
+                            for (DataSnapshot snapshot1 : snapshot.child("health").getChildren()) {
+                                String get = snapshot1.getValue(String.class);
+                                healthlist.add(get);
+                            }
+                            StringBuilder str = new StringBuilder();
+                            for (String list1 : healthlist){
+                                str.append(list1).append(" ");
+                                result2.setText("오늘의 운동 : "+str);
+                                Log.e("sss",list1);
+                            }
+                        }
+
 
                            ;
 
@@ -149,11 +179,11 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
                     }
                 });
 
-//                Intent intent = new Intent(getActivity(), CalenderSaveActivity.class);
-//                intent.putExtra("year",year);
-//                intent.putExtra("month",month+1);
-//                intent.putExtra("day",dayOfMonth);
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(), CalenderSaveActivity.class);
+                intent.putExtra("year",year);
+                intent.putExtra("month",month+1);
+                intent.putExtra("day",dayOfMonth);
+                startActivity(intent);
             }
         });
 
@@ -174,6 +204,8 @@ public class Layout4Fragment extends Fragment implements View.OnClickListener{
                                 return true;
                             case R.id.log:
                                 auth.signOut();
+                                //dialog 추가 예정
+                                Toast.makeText(getContext().getApplicationContext(),"로그아웃 되었습니다",Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(getActivity(), MainActivity.class));
                                 return true;
                             default:
