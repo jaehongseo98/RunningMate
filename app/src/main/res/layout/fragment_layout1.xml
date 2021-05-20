@@ -6,24 +6,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    >
 
-<<<<<<< HEAD
-    <include
-        layout="@layout/view_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </include>
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="@font/nanumgothicextrabold"
-        android:text="게시판"
-        android:textColor="@color/black"
-        android:textSize="25dp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="342dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/nanumgothicextrabold"
+            android:text="게시판"
+            android:textColor="@color/black"
+            android:textSize="25dp" />
+
+        <SearchView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -50,40 +56,20 @@
             android:text="러닝메이트"
             android:fontFamily="@font/nanumgothicextrabold"
             android:layout_marginLeft="10dp"/>
-=======
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/logo"
-        android:scaleType="fitCenter"
-        android:layout_marginLeft="20dp"/>
-
->>>>>>> abed7f55224fe2ee93abc6ec8e0940c4b734d6a5
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="2021-05-20"
+            android:text="2021-05-21"
             android:gravity="right"
             />
     </LinearLayout>
 
-
     <View
         android:layout_width="match_parent"
-<<<<<<< HEAD
         android:layout_height="2dp"
-        android:background="#E5E5E5"
-        android:layout_marginTop="1dp"/>
-=======
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
->>>>>>> abed7f55224fe2ee93abc6ec8e0940c4b734d6a5
+        android:layout_marginTop="1dp"
+        android:background="#E5E5E5" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -106,7 +92,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="2021-05-20"
+            android:text="2021-05-21"
             android:gravity="right"/>
     </LinearLayout>
 
@@ -257,6 +243,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_weight="1"
+            android:layout_marginBottom="10dp"
             android:baselineAlignBottom="false"
             android:clickable="true"
             app:backgroundTint="#74CAD5"
@@ -264,8 +251,6 @@
             tools:ignore="MissingConstraints" />
 
     </RelativeLayout>
-
-
 
 
 </LinearLayout>
