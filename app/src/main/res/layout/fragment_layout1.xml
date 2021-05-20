@@ -9,18 +9,8 @@
     android:background="@color/white"
     >
 
-<<<<<<< HEAD
+
     <LinearLayout
-=======
-
-    <include
-        layout="@layout/view_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </include>
-
-    <TextView
->>>>>>> e0d57d75eb7956b7fefabb96f0d30cb16d5598b3
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

@@ -43,7 +43,6 @@ import java.util.Map;
 public class Layout2Fragment extends Fragment {
 
     Button btnGps;
-    TextView tvGps;
     LinearLayout linearLayoutTmap;
     TMapView tMapView;
     TMapMarkerItem markerItem1;
@@ -103,11 +102,6 @@ public class Layout2Fragment extends Fragment {
                         altitude = location.getAltitude();
                     }
 
-                    tvGps.setText(
-                            "위도 : " + longitude + "\n" +
-                            "경도 : " + latitude + "\n"
-                            );
-
 
 
                     bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.border);
@@ -142,10 +136,7 @@ public class Layout2Fragment extends Fragment {
             latitude = location.getLatitude();
             altitude = location.getAltitude();
 
-            tvGps.setText(
-                    "위도 : " + longitude + "\n" +
-                    "경도 : " + latitude + "\n"
-                    );
+
 
             bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.border);
             tMapPoint1 = new TMapPoint(latitude, longitude);//내 위치 포인트 지정
