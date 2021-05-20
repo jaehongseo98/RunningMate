@@ -125,18 +125,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 package com.example.project;
 
 import androidx.annotation.NonNull;
