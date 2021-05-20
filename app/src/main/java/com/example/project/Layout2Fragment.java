@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -79,6 +80,7 @@ public class Layout2Fragment extends Fragment {
 
         lm = (LocationManager) root.getContext().getSystemService(Context.LOCATION_SERVICE);
         btnGps.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= 23 &&
@@ -132,6 +134,7 @@ public class Layout2Fragment extends Fragment {
 
 
     final LocationListener gpsLocationListener = new LocationListener() {
+        @SuppressLint("SetTextI18n")
         public void onLocationChanged(Location location) {
 
             provider = location.getProvider();

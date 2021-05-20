@@ -8,7 +8,7 @@
     tools:context=".MainActivity"
     android:background="@color/white">
 
-<<<<<<< HEAD
+
     <include
         layout="@layout/view_toolbar"
         android:layout_width="match_parent"
@@ -71,7 +71,6 @@
 
     <View
         android:layout_width="match_parent"
-<<<<<<< HEAD
         android:layout_height="2dp"
         android:background="#E5E5E5"
         android:layout_marginTop="1dp"/>
