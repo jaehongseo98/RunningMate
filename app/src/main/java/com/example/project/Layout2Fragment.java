@@ -68,7 +68,6 @@ public class Layout2Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_layout2, container, false);
         btnGps = (Button) root.findViewById(R.id.btn_Gps);
-        tvGps = (TextView) root.findViewById(R.id.tv_Gps);
         markerItem1 = new TMapMarkerItem(); //지도에 마커 설정
         markerItem2 = new TMapMarkerItem(); //지도에 마커 설정
         linearLayoutTmap = (LinearLayout) root.findViewById(R.id.linearLayoutTmap);
