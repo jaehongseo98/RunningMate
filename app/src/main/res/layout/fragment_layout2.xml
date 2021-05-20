@@ -1,27 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutTmap"
-        android:layout_width="match_parent"
-        android:layout_height="354dp"
-        android:orientation="vertical" />
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="20dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo" />
 
-    <TextView
-        android:id="@+id/tv_Gps"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="500dp"
+        android:background="#8ECCE8"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Running_Mate"
+            android:textSize="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/black"
+            />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutTmap"
+            android:layout_width="380dp"
+            android:layout_height="354dp"
+            android:layout_marginLeft="15dp"
+
+            android:background="#FFFFFF"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:text="#같이_운동할_사람"
+            android:textColor="@color/black"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:text="#온라인_친구"
+            android:textColor="@color/black"
+            android:textSize="25dp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_Gps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="검색"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="러닝 코스 추천"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="3dp"
+        />
+
+
 </android.widget.LinearLayout>
