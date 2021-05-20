@@ -1,11 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:background="@color/white">
 
+<<<<<<< HEAD
+    <include
+        layout="@layout/view_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </include>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/nanumgothicextrabold"
+        android:text="게시판"
+        android:textColor="@color/black"
+        android:textSize="25dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#E5E5E5"
+        android:layout_marginTop="1dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="러닝메이트 구해요"
+        android:textSize="20dp"
+        android:fontFamily="@font/nanumgothicextrabold"
+        android:layout_marginLeft="10dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="러닝메이트"
+            android:fontFamily="@font/nanumgothicextrabold"
+            android:layout_marginLeft="10dp"/>
+=======
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -13,10 +58,24 @@
         android:scaleType="fitCenter"
         android:layout_marginLeft="20dp"/>
 
+>>>>>>> abed7f55224fe2ee93abc6ec8e0940c4b734d6a5
 
-    <ListView
-        android:id="@+id/listview"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2021-05-20"
+            android:gravity="right"
+            />
+    </LinearLayout>
+
+
+    <View
         android:layout_width="match_parent"
+<<<<<<< HEAD
+        android:layout_height="2dp"
+        android:background="#E5E5E5"
+        android:layout_marginTop="1dp"/>
+=======
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,35 +83,189 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+>>>>>>> abed7f55224fe2ee93abc6ec8e0940c4b734d6a5
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnWrite"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_weight="1"
-        android:baselineAlignBottom="false"
-        android:clickable="true"
-        app:backgroundTint="#74CAD5"
-        app:srcCompat="@android:drawable/ic_menu_edit"
-        tools:ignore="MissingConstraints" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="심심해"
+        android:textSize="20dp"
+        android:fontFamily="@font/nanumgothicextrabold"
+        android:layout_marginLeft="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:layout_margin="10dp"-->
-<!--    android:background="#FFFFFF">-->
-
-<!--    -->
-<!--&lt;!&ndash;    <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
-<!--&lt;!&ndash;        android:id="@+id/recyclerview"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_height="match_parent" />&ndash;&gt;-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="심심하다"
+            android:fontFamily="@font/nanumgothicextrabold"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2021-05-20"
+            android:gravity="right"/>
+    </LinearLayout>
 
 
-<!--</RelativeLayout>-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#E5E5E5"
+        android:layout_marginTop="1dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="운동 하실 분 구해요"
+        android:textSize="20dp"
+        android:fontFamily="@font/nanumgothicextrabold"
+        android:layout_marginLeft="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ㅇㅇㅇ동 근처에서 같이 운동하실 분~"
+            android:fontFamily="@font/nanumgothicextrabold"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2021-05-20"
+            android:gravity="right
+"/>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#E5E5E5"
+        android:layout_marginTop="1dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="안녕하세요?"
+        android:textSize="20dp"
+        android:fontFamily="@font/nanumgothicextrabold"
+        android:layout_marginLeft="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="처음 뵙겠습니다."
+            android:fontFamily="@font/nanumgothicextrabold"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2021-05-20"
+            android:gravity="right
+"/>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#E5E5E5"
+        android:layout_marginTop="1dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ㅎㅎ"
+        android:textSize="20dp"
+        android:fontFamily="@font/nanumgothicextrabold"
+        android:layout_marginLeft="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ㅎㅎㅎㅎㅎ"
+            android:fontFamily="@font/nanumgothicextrabold"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2021-05-20"
+            android:gravity="right
+"/>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#E5E5E5"
+        android:layout_marginTop="1dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="첫 게시물 입니다"
+        android:textSize="20dp"
+        android:fontFamily="@font/nanumgothicextrabold"
+        android:layout_marginLeft="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="첫번째 게시물"
+            android:fontFamily="@font/nanumgothicextrabold"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2021-05-20"
+            android:gravity="right
+"/>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#E5E5E5"
+        android:layout_marginTop="1dp"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnWrite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1"
+            android:baselineAlignBottom="false"
+            android:clickable="true"
+            app:backgroundTint="#74CAD5"
+            app:srcCompat="@android:drawable/ic_menu_edit"
+            tools:ignore="MissingConstraints" />
+
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>
