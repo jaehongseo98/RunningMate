@@ -58,7 +58,7 @@ public class UserUpdateActivity extends AppCompatActivity {
         useremail = (TextView)findViewById(R.id.userid);
         txt_address = (TextView)findViewById(R.id.txt_address);
         updatepw = (Button)findViewById(R.id.updatepw);
-        btnjuso = (Button)findViewById(R.id.btnjuso);
+        //btnjuso = (Button)findViewById(R.id.btnjuso);
         btnexit = (Button) findViewById(R.id.btn_exit);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -133,14 +133,14 @@ public class UserUpdateActivity extends AppCompatActivity {
 
 
 
-        btnjuso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(UserUpdateActivity.this,DaumjusoActivity.class);
-                startActivity(intent);
-            }
-        });
+//        btnjuso.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent intent = new Intent(UserUpdateActivity.this,DaumjusoActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         btnsujung.setOnClickListener(new View.OnClickListener() {
             @Override
