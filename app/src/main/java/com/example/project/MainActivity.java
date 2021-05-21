@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity{
 //    private static final int REQ_SIGN_GOOGLE = 100; // 구글 로그인 결과 코드
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+//    private ListView listview;
+//    private ListViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,22 @@ public class MainActivity extends AppCompatActivity{
         moveToRegister = (TextView) findViewById(R.id.moveToRegister);
         login_id = (EditText) findViewById(R.id.login_id);
         login_pw = (EditText) findViewById(R.id.login_pw);
+
+
+        //정희
+        // Adapter 생성
+//        adapter = new ListViewAdapter();
+//
+//        // 리스트뷰 객체 생성 및 Adapter 설정
+//        listview = (ListView) findViewById(R.id.listview);
+//        listview.setAdapter(adapter);
+//
+//        // 리스트 뷰 아이템 추가.
+//        adapter.addItem();
+//        adapter.addItem();
+//        adapter.addItem();
+
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

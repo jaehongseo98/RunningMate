@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -42,7 +43,6 @@ import java.util.Map;
 public class Layout2Fragment extends Fragment {
 
     Button btnGps;
-    TextView tvGps;
     LinearLayout linearLayoutTmap;
     TMapView tMapView;
     TMapMarkerItem markerItem1;
@@ -68,7 +68,6 @@ public class Layout2Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_layout2, container, false);
         btnGps = (Button) root.findViewById(R.id.btn_Gps);
-        tvGps = (TextView) root.findViewById(R.id.tv_Gps);
         markerItem1 = new TMapMarkerItem(); //지도에 마커 설정
         markerItem2 = new TMapMarkerItem(); //지도에 마커 설정
         linearLayoutTmap = (LinearLayout) root.findViewById(R.id.linearLayoutTmap);
@@ -80,6 +79,7 @@ public class Layout2Fragment extends Fragment {
 
         lm = (LocationManager) root.getContext().getSystemService(Context.LOCATION_SERVICE);
         btnGps.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= 23 &&
@@ -101,11 +101,6 @@ public class Layout2Fragment extends Fragment {
                         latitude = location.getLatitude();
                         altitude = location.getAltitude();
                     }
-
-                    tvGps.setText(
-                            "위도 : " + longitude + "\n" +
-                            "경도 : " + latitude + "\n"
-                            );
 
 
 
@@ -133,6 +128,7 @@ public class Layout2Fragment extends Fragment {
 
 
     final LocationListener gpsLocationListener = new LocationListener() {
+        @SuppressLint("SetTextI18n")
         public void onLocationChanged(Location location) {
 
             provider = location.getProvider();
@@ -140,10 +136,7 @@ public class Layout2Fragment extends Fragment {
             latitude = location.getLatitude();
             altitude = location.getAltitude();
 
-            tvGps.setText(
-                    "위도 : " + longitude + "\n" +
-                    "경도 : " + latitude + "\n"
-                    );
+
 
             bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.border);
             tMapPoint1 = new TMapPoint(latitude, longitude);//내 위치 포인트 지정
