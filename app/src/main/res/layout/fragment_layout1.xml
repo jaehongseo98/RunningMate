@@ -26,232 +26,56 @@
             android:textColor="@color/black"
             android:textSize="25dp" />
 
-        <SearchView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="right" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#E5E5E5"
-        android:layout_marginTop="1dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="러닝메이트 구해요"
-        android:textSize="20dp"
-        android:fontFamily="@font/nanumgothicextrabold"
-        android:layout_marginLeft="10dp"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="러닝메이트"
-            android:fontFamily="@font/nanumgothicextrabold"
-            android:layout_marginLeft="10dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2021-05-21"
-            android:gravity="right"
-            />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="1dp"
-        android:background="#E5E5E5" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="심심해"
-        android:textSize="20dp"
-        android:fontFamily="@font/nanumgothicextrabold"
-        android:layout_marginLeft="10dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="심심하다"
-            android:fontFamily="@font/nanumgothicextrabold"
-            android:layout_marginLeft="10dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2021-05-21"
-            android:gravity="right"/>
-    </LinearLayout>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#E5E5E5"
-        android:layout_marginTop="1dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="운동 하실 분 구해요"
-        android:textSize="20dp"
-        android:fontFamily="@font/nanumgothicextrabold"
-        android:layout_marginLeft="10dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ㅇㅇㅇ동 근처에서 같이 운동하실 분~"
-            android:fontFamily="@font/nanumgothicextrabold"
-            android:layout_marginLeft="10dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2021-05-20"
-            android:gravity="right
-"/>
-    </LinearLayout>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#E5E5E5"
-        android:layout_marginTop="1dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="안녕하세요?"
-        android:textSize="20dp"
-        android:fontFamily="@font/nanumgothicextrabold"
-        android:layout_marginLeft="10dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="처음 뵙겠습니다."
-            android:fontFamily="@font/nanumgothicextrabold"
-            android:layout_marginLeft="10dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2021-05-20"
-            android:gravity="right
-"/>
-    </LinearLayout>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#E5E5E5"
-        android:layout_marginTop="1dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ㅎㅎ"
-        android:textSize="20dp"
-        android:fontFamily="@font/nanumgothicextrabold"
-        android:layout_marginLeft="10dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ㅎㅎㅎㅎㅎ"
-            android:fontFamily="@font/nanumgothicextrabold"
-            android:layout_marginLeft="10dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2021-05-20"
-            android:gravity="right
-"/>
-    </LinearLayout>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#E5E5E5"
-        android:layout_marginTop="1dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="첫 게시물 입니다"
-        android:textSize="20dp"
-        android:fontFamily="@font/nanumgothicextrabold"
-        android:layout_marginLeft="10dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="첫번째 게시물"
-            android:fontFamily="@font/nanumgothicextrabold"
-            android:layout_marginLeft="10dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2021-05-20"
-            android:gravity="right
-"/>
-    </LinearLayout>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#E5E5E5"
-        android:layout_marginTop="1dp"/>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnWrite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp"
-            android:baselineAlignBottom="false"
             android:clickable="true"
             app:backgroundTint="#74CAD5"
             app:srcCompat="@android:drawable/ic_menu_edit"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
-    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#E5E5E5"
+        android:layout_marginTop="1dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lvBoard"
+            android:layout_marginRight="5dp"/>
+    </LinearLayout>
+
+<!--    <RelativeLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/btnWrite"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_weight="1"-->
+<!--            android:baselineAlignBottom="false"-->
+<!--            android:clickable="true"-->
+<!--            app:backgroundTint="#74CAD5"-->
+<!--            app:srcCompat="@android:drawable/ic_menu_edit"-->
+<!--            tools:ignore="MissingConstraints"-->
+<!--            android:scaleType="fitCenter"/>-->
+
+<!--    </RelativeLayout>-->
 
 
 </LinearLayout>
